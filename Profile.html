@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personnel Data Sheet - Shoppe HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><img src="human reources pic.jpg" alt="Logo"></div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">EMPLOYEE INFORMATION SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li><a href="Dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+        <li><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Announcement.html"><span class="nav-icon">📢</span> Announcement</a></li>
+        <li data-employee-only><a href="Schedule.html"><span class="nav-icon">📅</span> Work Schedule</a></li>
+
+        <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a></li>
+        <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+        <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <!-- Top bar -->
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+            Dashboard</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <div class="profile-hero"
+        style="padding: 30px; text-align: center; background: #5b4dc7; border-radius: 12px; color: white; margin-bottom: 30px;">
+        <div
+          style="background: rgba(255,255,255,0.2); width: 40px; height: 40px; margin: 0 auto 15px; font-size: 20px; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+          📄</div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 5px; color: white;">Personal Data Sheet</h2>
+        <p style="opacity: 0.8; font-size: 0.9rem; color: white;">Official Government Document</p>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header" style="justify-content: center; border-bottom: none; margin-bottom: 10px;">
+          <div class="section-icon"
+            style="background: #e11d48; width: 22px; height: 22px; font-size: 12px; border-radius: 50%;">📄</div>
+          <h3 style="font-size: 1.1rem; color: #1e293b; margin: 0;">Document Preview</h3>
+        </div>
+        <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-bottom: 30px;">Preview your Personal
+          Data Sheet before downloading or printing</p>
+
+        <div id="pdsPreview" class="pds-preview-container"
+          style="background: white; padding: 40px; border-radius: 12px; border: 1px solid #f1f5f9; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); min-height: 400px;">
+          <div id="uploadZone" class="resume-upload-zone" onclick="document.getElementById('resumeInput').click()">
+            <div class="upload-icon">📁</div>
+            <p style="font-weight: 600; color: #1e293b; margin-bottom: 5px;">Upload your Resume / PDS</p>
+            <p style="font-size: 0.85rem; color: #64748b;">PDF or Image files (Max 5MB)</p>
+            <button class="btn-upload">Browse Files</button>
+          </div>
+          <input type="file" id="resumeInput" style="display: none;" accept=".pdf,image/*">
+          <div id="filePreviewArea" style="display: none; width: 100%;">
+            <div class="file-info"
+              style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 15px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+              <div>
+                <span id="fileName" style="font-weight: 600; color: #1e293b;">resume.pdf</span>
+                <span id="fileSize" style="font-size: 0.8rem; color: #64748b; margin-left: 10px;">(2.4 MB)</span>
+              </div>
+              <button onclick="ProfileLogic.clearResume()"
+                style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">Remove</button>
+            </div>
+            <div id="previewEmbed"></div>
+          </div>
+        </div>
+
+        <script src="auth.js"></script>
+        <script src="profile_logic.js"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            ProfileLogic.initPDS();
+          });
+        </script>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    (function () {
+      Auth.requireAuth();
+      Auth.applyRoleNav();
+      Auth.updateUserDisplay();
+
+      const sidebar = document.querySelector('.sidebar');
+      const toggleBtn = document.getElementById('sidebarToggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') sidebar.classList.add('collapsed');
+      }
+
+      window.openAccountMenu = function () {
+        document.getElementById("accountMenuOverlay").classList.add("active");
+      };
+
+      var overlay = document.getElementById("accountMenuOverlay");
+      var closeBtn = document.getElementById("closeAccountMenu");
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          overlay.classList.remove("active");
+        };
+      }
+      if (overlay) {
+        overlay.onclick = function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove("active");
+          }
+        };
+      }
+    })();
+  </script>
+</body>
+
+</html>

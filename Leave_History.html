@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leave History - Shopee HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon"><img src="human reources pic.jpg" alt="Logo"></div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">EMPLOYEE INFORMATION SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li><a href="Dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+        <li><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Announcement.html"><span class="nav-icon">📢</span> Announcement</a></li>
+        <li data-employee-only><a href="Schedule.html"><span class="nav-icon">📅</span> Work Schedule</a></li>
+
+        <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a></li>
+        <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+        <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <div class="leave-history-container">
+        <div class="leave-history-title-section"
+          style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <h2 class="leave-history-title">Leave History</h2>
+          <button class="btn-request-leave" onclick="ProfileLogic.openLeaveModal()">+ Request Leave</button>
+        </div>
+        <table class="light-table">
+          <thead>
+            <tr>
+              <th>Leave Type</th>
+              <th>Start Date</th>
+              <th>Days</th>
+              <th>Status</th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leaveHistoryTableBody">
+            <!-- Records will be populated by ProfileLogic -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Leave Request Modal -->
+      <div class="modal-overlay" id="leaveModalOverlay" style="display: none;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="modalTitle">Request Leave</h3>
+            <button class="close-modal" onclick="ProfileLogic.closeLeaveModal()">&times;</button>
+          </div>
+          <form id="leaveRequestForm" onsubmit="ProfileLogic.saveLeaveRequest(event)">
+            <input type="hidden" id="editLeaveId">
+            <div class="form-group">
+              <label>Leave Type</label>
+              <select id="leaveType" required>
+                <option value="">Select Type</option>
+                <option value="Sick Leave">Sick Leave</option>
+                <option value="Vacation Leave">Vacation Leave</option>
+                <option value="Emergency Leave">Emergency Leave</option>
+                <option value="Maternity/Paternity Leave">Maternity/Paternity Leave</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" id="startDate" required>
+              </div>
+              <div class="form-group">
+                <label>End Date</label>
+                <input type="date" id="endDate" required onchange="ProfileLogic.calculateDays()">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Days</label>
+              <input type="text" id="leaveDays" readonly value="0">
+            </div>
+            <div class="form-group">
+              <label>Reason</label>
+              <textarea id="leaveReason" rows="3" placeholder="State your reason..." required></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn-cancel" onclick="ProfileLogic.closeLeaveModal()">Cancel</button>
+              <button type="submit" class="btn-save">Submit Request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <script src="auth.js"></script>
+      <script src="profile_logic.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          ProfileLogic.initLeaveHistory();
+        });
+      </script>
+    </main>
+  </div>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script>
+    (function () {
+      Auth.requireAuth();
+      Auth.applyRoleNav();
+      Auth.updateUserDisplay();
+
+      const sidebar = document.querySelector('.sidebar');
+      const toggleBtn = document.getElementById('sidebarToggle');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') sidebar.classList.add('collapsed');
+      }
+
+      window.openAccountMenu = function () {
+        document.getElementById("accountMenuOverlay").classList.add("active");
+      };
+
+      var overlay = document.getElementById("accountMenuOverlay");
+      var closeBtn = document.getElementById("closeAccountMenu");
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          overlay.classList.remove("active");
+        };
+      }
+      if (overlay) {
+        overlay.onclick = function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove("active");
+          }
+        };
+      }
+    })();
+  </script>
+</body>
+
+</html>

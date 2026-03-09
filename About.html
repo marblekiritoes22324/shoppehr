@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Shopee HR</title>
+    <link rel="stylesheet" href="Shoppehr.css" />
+    <style>
+        .about-page {
+            /* Using auth-page-purple background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .about-container {
+            max-width: 650px;
+            /* Reduced from 800px */
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            padding: 50px;
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+
+        .about-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .about-icon {
+            width: 50px;
+            height: 50px;
+            background: #5b4dc7;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 8px 16px rgba(91, 77, 199, 0.2);
+        }
+
+        .about-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e293b;
+            margin: 0;
+        }
+
+        .about-content {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #475569;
+            text-align: justify;
+        }
+
+        .about-content p {
+            margin-bottom: 20px;
+        }
+
+        .highlight-box {
+            background: #f8fafc;
+            border-left: 4px solid #5b4dc7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            font-style: italic;
+            color: #334155;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .mission-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .mission-card:hover {
+            transform: translateY(-5px);
+            border-color: #cbd5e1;
+        }
+
+        .mission-icon {
+            font-size: 30px;
+            margin-bottom: 12px;
+        }
+
+        .mission-title {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .mission-text {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .shopee-logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="about-page auth-page-purple">
+
+    <div class="about-container">
+        <a href="Login.html" class="back-btn">⬅️ Back to Login</a>
+
+        <div class="about-header">
+            <div class="about-icon">🏢</div>
+            <h1 class="about-title">About Us</h1>
+        </div>
+
+        <div class="about-content">
+            <p>
+                Welcome to Shopee HR1! Our system is a dedicated <strong>Recruitment Management System for
+                    Shopee</strong>
+                designed to empower our Human Resources department to efficiently manage job postings, track applicant
+                information,
+                and streamline the entire hiring process from application to onboarding.
+            </p>
+            <p>
+                Built with modern technology and user experience in mind, it allows our HR staff to post new job
+                vacancies instantly,
+                review and schedule applicants seamlessly, and organize critical recruitment data in one unified,
+                secure, and highly efficient ecosystem.
+            </p>
+
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="mission-icon">🎯</div>
+                    <div class="mission-title">Our Mission</div>
+                    <div class="mission-text">To connect top talent with amazing opportunities at Shopee through a
+                        seamless and transparent hiring process.</div>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-icon">⚙️</div>
+                    <div class="mission-title">Innovation</div>
+                    <div class="mission-text">Leveraging technology to make recruitment faster, fairer, and more
+                        efficient for everyone involved.</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                "Connecting amazing talent with world-class opportunities. Join us in building the future of
+                e-commerce."
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

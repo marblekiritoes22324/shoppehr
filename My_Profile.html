@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile - Shopee HR</title>
+    <link rel="stylesheet" href="Shoppehr.css" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon"><img src="human reources pic.jpg" alt="Logo"></div>
+                <div class="logo-text">
+                    <span class="logo-title">HUMAN RESOURCE</span>
+                    <span class="logo-subtitle">EMPLOYEE INFORMATION SYSTEM</span>
+                </div>
+            </div>
+            <ul>
+                <li><a href="Dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+                <li data-employee-only class="active"><a href="My_Profile.html"><span class="nav-icon">👤</span> My
+                        Profile</a></li>
+                <li data-employee-only><a href="Announcement.html"><span class="nav-icon">📢</span> Announcement</a>
+                </li>
+                <li data-employee-only><a href="Schedule.html"><span class="nav-icon">📅</span> Work Schedule</a></li>
+
+                <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a>
+                </li>
+                <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+                <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+                <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+            </ul>
+        </aside>
+
+        <main class="main">
+            <!-- Top bar -->
+            <header class="dashboard-header">
+                <div class="header-user">
+                    <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="user-avatar">
+                        <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" data-user-display="name">Christian</span>
+                        <span class="user-role" data-role-display>Employee</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+                    <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+                        Dashboard</button>
+                    <span class="logout-link" onclick="Auth.logout()">Logout</span>
+                </div>
+            </header>
+
+            <div class="profile-hero">
+                <div class="hero-avatar">
+                    <img src="anonymous.jpg" alt="Profile">
+                </div>
+                <h2 data-user-display="name">Christian Caspe</h2>
+                <p data-role-display>Employee</p>
+                <div class="hero-dept">HR Department</div>
+                <div class="status-label">ACTIVE</div>
+            </div>
+
+            <div class="profile-tabs-nav">
+                <div class="profile-tab active" onclick="switchProfileTab('info')">
+                    <span class="tab-number">1</span> Personal Information
+                </div>
+                <div class="profile-tab" onclick="switchProfileTab('employment')">
+                    <span class="tab-number">2</span> Employment Details
+                </div>
+                <div class="profile-tab" onclick="switchProfileTab('docs')">
+                    <span class="tab-number">3</span> Documents
+                </div>
+            </div>
+
+            <div id="tab-info" class="profile-tab-content">
+                <div class="section-card">
+                    <div class="section-header">
+                        <div class="section-icon">👤</div>
+                        <h3>Personal Information</h3>
+                    </div>
+                    <div class="pds-grid">
+                        <div class="info-item">
+                            <label>Employee ID</label>
+                            <span class="info-value">EMP-2024-001</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Username</label>
+                            <span class="info-value">Christian Caspe</span>
+                        </div>
+                        <div class="info-item">
+                            <label>First Name</label>
+                            <span class="info-value">John</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Last Name</label>
+                            <span class="info-value">Doe</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Email Address</label>
+                            <span class="info-value">example@gmail.com</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Mobile Number</label>
+                            <span class="info-value">+63 912 345 6789</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Date of Birth</label>
+                            <span class="info-value">September 10, 2001</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Gender</label>
+                            <span class="info-value">Male</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Marital Status</label>
+                            <span class="info-value">Married</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Nationality</label>
+                            <span class="info-value">Filipino</span>
+                        </div>
+                    </div>
+
+                    <div class="section-header" style="margin-top: 40px;">
+                        <div class="section-icon">🏠</div>
+                        <h3>Address Information</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-employment" class="profile-tab-content" style="display: none;">
+                <div class="section-card">
+                    <div class="section-header">
+                        <div class="section-icon">💼</div>
+                        <h3>Employment Details</h3>
+                    </div>
+                    <div class="pds-grid">
+                        <div class="info-item">
+                            <label>Designation</label>
+                            <span class="info-value">Staff</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Department</label>
+                            <span class="info-value">HR Department</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Employee Type</label>
+                            <span class="info-value">Permanent</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Salary Grade</label>
+                            <span class="info-value">SG-10</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Civil Service Eligibility</label>
+                            <span class="info-value">Not Eligible</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Working Days</label>
+                            <span class="info-value">Mon-Friday</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Joining Date</label>
+                            <span class="info-value">September 27, 2025</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Employment Status</label>
+                            <span class="info-value">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-docs" class="profile-tab-content" style="display: none;">
+                <div class="section-card">
+                    <div class="section-header">
+                        <div class="section-icon">📁</div>
+                        <h3>Employee Documents</h3>
+                    </div>
+                    <div class="docs-grid">
+                        <div class="doc-card">
+                            <h4>📄 Government ID</h4>
+                            <a href="#" class="doc-download"><span>⬇</span> Download Government ID</a>
+                        </div>
+                        <div class="doc-card">
+                            <h4>📄 Curriculum Vitae</h4>
+                            <a href="#" class="doc-download"><span>⬇</span> Download CV</a>
+                        </div>
+                        <div class="doc-card">
+                            <h4>📄 Service Record</h4>
+                            <a href="#" class="doc-download"><span>⬇</span> Download Service Record</a>
+                        </div>
+                        <div class="doc-card">
+                            <h4>📄 Appointment Paper</h4>
+                            <a href="#" class="doc-download"><span>⬇</span> Download Appointment Paper</a>
+                        </div>
+                        <div class="doc-card">
+                            <h4>📄 Transcript of Records</h4>
+                            <a href="#" class="doc-download"><span>⬇</span> Download TOR</a>
+                        </div>
+                        <div class="doc-card">
+                            <h4>📄 Civil Service Certificate</h4>
+                            <a href="#" class="doc-download"><span>⬇</span> Download CS Certificate</a>
+                        </div>
+                    </div>
+
+                    <div class="section-header" style="margin-top: 40px;">
+                        <div class="section-icon">📜</div>
+                        <h3>Personal Data Sheet</h3>
+                    </div>
+                    <p style="color: #64748b; font-size: 0.9rem;">No PDS uploaded</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Account Menu Modal -->
+    <div class="account-menu-overlay" id="accountMenuOverlay">
+        <div class="account-menu-modal">
+            <div class="account-menu-header">
+                <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+                <div class="account-menu-title">Account Menu</div>
+                <div class="account-menu-avatar">
+                    <img src="anonymous.jpg" alt="Profile">
+                </div>
+                <div class="account-user-name" data-user-display="name">--</div>
+                <div class="account-user-email" data-user-display="email">--</div>
+            </div>
+
+            <div class="account-info-box">
+                <div class="account-info-title">
+                    <span class="account-info-icon">👤</span> Account Information
+                </div>
+                <div class="account-info-grid">
+                    <div class="info-row">
+                        <span class="info-label">First Name:</span>
+                        <span class="info-value" data-user-display="firstname">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Last Name:</span>
+                        <span class="info-value" data-user-display="lastname">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Designation:</span>
+                        <span class="info-value" data-role-display>--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value" data-user-display="email">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="account-menu-links">
+                <a href="Change_Password.html" class="account-menu-link">
+                    <div class="account-link-left">
+                        <div class="account-link-icon">🔑</div>
+                        <div class="account-link-text">
+                            <span class="account-link-title">Change password</span>
+                            <span class="account-link-desc">Update your security</span>
+                        </div>
+                    </div>
+                    <span>&rsaquo;</span>
+                </a>
+                <a href="Activity_Log.html" class="account-menu-link">
+                    <div class="account-link-left">
+                        <div class="account-link-icon">🕒</div>
+                        <div class="account-link-text">
+                            <span class="account-link-title">Activity Log</span>
+                            <span class="account-link-desc">Recent account actions</span>
+                        </div>
+                    </div>
+                    <span>&rsaquo;</span>
+                </a>
+            </div>
+
+            <div class="account-menu-footer">
+                HR Employee Information System v1.0
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script>
+        (function () {
+            Auth.requireAuth();
+            Auth.applyRoleNav();
+            Auth.updateUserDisplay();
+        })();
+
+        // Tab logic
+        function switchProfileTab(tabId) {
+            const tabs = document.querySelectorAll('.profile-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const contents = document.querySelectorAll('.profile-tab-content');
+            contents.forEach(c => c.style.display = 'none');
+            document.getElementById('tab-' + tabId).style.display = 'block';
+        }
+
+        // Sidebar toggle logic
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+            });
+            if (localStorage.getItem('sidebarCollapsed') === 'true') sidebar.classList.add('collapsed');
+        }
+
+        // Account Menu Modal Logic
+        window.openAccountMenu = function () {
+            document.getElementById("accountMenuOverlay").classList.add("active");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var overlay = document.getElementById("accountMenuOverlay");
+            var closeBtn = document.getElementById("closeAccountMenu");
+            if (closeBtn) {
+                closeBtn.onclick = function () {
+                    overlay.classList.remove("active");
+                };
+            }
+            if (overlay) {
+                overlay.onclick = function (e) {
+                    if (e.target === overlay) {
+                        overlay.classList.remove("active");
+                    }
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>

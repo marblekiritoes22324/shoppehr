@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Human Resource - Employee Information System</title>
+  <link rel="stylesheet" href="Shoppehr.css?v=11" />
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="human reources pic.jpg" alt="Logo">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">EMPLOYEE INFORMATION SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li class="active"><a href="Dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+        <li data-employee-only><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Announcement.html"><span class="nav-icon">📢</span> Announcement</a></li>
+        <li data-employee-only><a href="Schedule.html"><span class="nav-icon">📅</span> Work Schedule</a></li>
+
+        <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a></li>
+        <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+        <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Top bar -->
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+            Dashboard</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <!-- Employee View Components -->
+      <div data-employee-only>
+        <!-- Welcome Banner -->
+        <div class="admin-welcome-banner" style="margin-bottom: 24px;">
+          <div class="welcome-text">
+            <h2 id="employeeGreeting">Welcome back!</h2>
+            <p>Here's what's happening with your workforce today.</p>
+          </div>
+          <div class="welcome-date-box">
+            <span id="employeeCurrentDate">-- --, ----</span>
+            <span id="employeeCurrentTime">--:-- --</span>
+          </div>
+        </div>
+
+        <!-- Summary Stats Row -->
+        <div class="dashboard-stats-row">
+          <div class="stat-card-premium">
+            <div class="stat-icon-box bg-purple-light">📅</div>
+            <div class="stat-content">
+              <span class="stat-label">Leave Balance</span>
+              <span class="stat-number">12 Days</span>
+            </div>
+          </div>
+          <div class="stat-card-premium">
+            <div class="stat-icon-box bg-green-light">✅</div>
+            <div class="stat-content">
+              <span class="stat-label">Attendance Rate</span>
+              <span class="stat-number">98.5%</span>
+            </div>
+          </div>
+          <div class="stat-card-premium">
+            <div class="stat-icon-box bg-orange-light">🗓️</div>
+            <div class="stat-content">
+              <span class="stat-label">Upcoming Holiday</span>
+              <span class="stat-number">Mar 27</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Dashboard Content Grid -->
+        <div class="dashboard-main-grid">
+          <!-- Left Column: Announcements -->
+          <div class="dashboard-section-card">
+            <div class="section-header">
+              <h3 class="section-title">📢 Recent Announcements</h3>
+              <a href="Announcement.html" class="view-all-link"
+                style="font-size: 0.8rem; color: #5b4dc7; font-weight: 600;">View All</a>
+            </div>
+            <div class="announcement-list">
+              <div class="announcement-item">
+                <div class="announcement-meta">
+                  <span>System Update</span>
+                  <span>March 8, 2026</span>
+                </div>
+                <div class="announcement-text">
+                  New payroll integration is now live. Please double-check your bank details in the Personal Data Sheet.
+                </div>
+              </div>
+              <div class="announcement-item">
+                <div class="announcement-meta">
+                  <span>HR Policy</span>
+                  <span>March 5, 2026</span>
+                </div>
+                <div class="announcement-text">
+                  Summer outing registration is now open! Please sign up before the end of the week.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Work Schedule -->
+          <div class="dashboard-section-card">
+            <div class="section-header">
+              <h3 class="section-title">📅 Work Schedule</h3>
+            </div>
+            <div class="schedule-list">
+              <div class="schedule-item">
+                <div class="schedule-date">
+                  <span class="date-day">09</span>
+                  <span class="date-month">Mar</span>
+                </div>
+                <div class="schedule-info">
+                  <span class="event-name">Day Shift</span>
+                  <span class="event-time">08:00 AM - 05:00 PM</span>
+                </div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-date">
+                  <span class="date-day">10</span>
+                  <span class="date-month">Mar</span>
+                </div>
+                <div class="schedule-info">
+                  <span class="event-name">Day Shift</span>
+                  <span class="event-time">08:00 AM - 05:00 PM</span>
+                </div>
+              </div>
+              <div class="schedule-item">
+                <div class="schedule-date">
+                  <span class="date-day">11</span>
+                  <span class="date-month">Mar</span>
+                </div>
+                <div class="schedule-info">
+                  <span class="event-name">Mid-week Meeting</span>
+                  <span class="event-time">10:00 AM - 11:30 AM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Info Cards -->
+        <div class="dashboard-main-grid" style="grid-template-columns: 1fr 1fr; margin-top: 24px;">
+          <!-- Profile Snapshot (Legacy but styled) -->
+          <div class="dashboard-section-card">
+            <h3 class="section-title">🧬 Profile Snapshot</h3>
+            <div class="profile-snapshot-grid" style="margin-top: 20px;">
+              <div class="snapshot-item">
+                <label>Position</label>
+                <span data-snapshot-display="position">Staff</span>
+              </div>
+              <div class="snapshot-item">
+                <label>Hire Date</label>
+                <span data-snapshot-display="hire_date">March 4 2026</span>
+              </div>
+            </div>
+            <button class="btn-profile-outline" onclick="window.location.href='My_Profile.html'"
+              style="margin-top: 20px; width: 100%;">View Full Profile</button>
+          </div>
+
+          <!-- Quick Links Section -->
+          <div class="dashboard-section-card">
+            <h3 class="section-title">📂 Quick Documents</h3>
+            <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;">
+              <div class="download-section-item" style="border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px;">
+                <span style="font-weight: 600; font-size: 0.9rem;">Leave Form</span>
+                <button class="btn-download-link" style="float: right; padding: 4px 12px; font-size: 0.8rem;">⬇
+                  Download</button>
+              </div>
+              <div class="download-section-item" style="border: 1px solid #f1f5f9; padding: 12px; border-radius: 12px;">
+                <span style="font-weight: 600; font-size: 0.9rem;">PDS Form</span>
+                <button class="btn-download-link" style="float: right; padding: 4px 12px; font-size: 0.8rem;">⬇
+                  Download</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin View Components -->
+      <div data-admin-only>
+        <!-- Welcome Banner -->
+        <div class="admin-welcome-banner">
+          <div class="welcome-text">
+            <h2 id="adminGreeting">Welcome back, Admin!</h2>
+            <p>Here's what's happening with your workforce today.</p>
+          </div>
+          <div class="welcome-date-box">
+            <span id="currentDate">-- --, ----</span>
+            <span id="currentTime">--:-- --</span>
+          </div>
+        </div>
+
+        <!-- Quick Actions Row -->
+        <div class="admin-quick-actions">
+          <div class="quick-action-card" onclick="window.location.href='Employee Management-1.html'">
+            <div class="action-icon-circle bg-purple-light">👤</div>
+            <span class="action-label">Add Employee</span>
+          </div>
+          <div class="quick-action-card" onclick="window.location.href='Announcement.html'">
+            <div class="action-icon-circle bg-green-light">📢</div>
+            <span class="action-label">Post Announcement</span>
+          </div>
+          <div class="quick-action-card" onclick="window.location.href='Reports.html'">
+            <div class="action-icon-circle bg-orange-light">📊</div>
+            <span class="action-label">Generate Report</span>
+          </div>
+          <div class="quick-action-card" onclick="window.location.href='Settings.html'">
+            <div class="action-icon-circle" style="background: #f1f5f9; color: #64748b;">⚙️</div>
+            <span class="action-label">System Settings</span>
+          </div>
+        </div>
+
+        <!-- Admin Stats Summary -->
+        <div class="admin-stats-container">
+          <div class="admin-stat-card-premium card-theme-purple">
+            <div class="stat-icon-wrapper">👥</div>
+            <div class="stat-info-content">
+              <span class="stat-label-text">Total Employees</span>
+              <span class="stat-value-number">35</span>
+              <div class="stat-trend-indicator trend-up">↑ 2.4% vs last month</div>
+            </div>
+          </div>
+          <div class="admin-stat-card-premium card-theme-green">
+            <div class="stat-icon-wrapper">✨</div>
+            <div class="stat-info-content">
+              <span class="stat-label-text">New Hires</span>
+              <span class="stat-value-number">4</span>
+              <div class="stat-trend-indicator trend-up">↑ 1 this month</div>
+            </div>
+          </div>
+          <div class="admin-stat-card-premium card-theme-orange">
+            <div class="stat-icon-wrapper">⛱️</div>
+            <div class="stat-info-content">
+              <span class="stat-label-text">On Leave Today</span>
+              <span class="stat-value-number">2</span>
+              <div class="stat-trend-indicator trend-none">Constant vs yesterday</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Admin Grid -->
+        <div class="dashboard-main-grid">
+          <!-- Activity Log Feed -->
+          <div class="dashboard-section-card" style="grid-column: span 2;">
+            <div class="section-header">
+              <h3 class="section-title">🔍 Recent Activity Feed</h3>
+              <a href="Activity_Log.html" class="view-all-link"
+                style="font-size: 0.8rem; color: #5b4dc7; font-weight: 600;">View Full Log</a>
+            </div>
+            <div class="activity-feed">
+              <div class="activity-item">
+                <div class="activity-dot"></div>
+                <div class="activity-content">
+                  <span class="activity-time">2 hours ago</span>
+                  <div class="activity-text"><strong>HR Admin</strong> updated <strong>System Policy</strong></div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background: #10b981;"></div>
+                <div class="activity-content">
+                  <span class="activity-time">Yesterday</span>
+                  <div class="activity-text">New employee <strong>Mike Wilson</strong> added to Engineering</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background: #f97316;"></div>
+                <div class="activity-content">
+                  <span class="activity-time">2 days ago</span>
+                  <div class="activity-text">Employee details updated for <strong>Sarah Jane</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="dashboard-grid">
+          <div class="dashboard-panel">
+            <h3 class="panel-title">📈 Employee Growth Over Time</h3>
+            <div style="position: relative; width: 100%; height: 320px;">
+              <canvas id="employeeGrowthChart"></canvas>
+            </div>
+          </div>
+          <div class="dashboard-panel">
+            <h3 class="panel-title">🏢 Department Distribution</h3>
+            <div
+              style="position: relative; width: 100%; height: 320px; display: flex; align-items: center; justify-content: center;">
+              <canvas id="departmentChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="auth.js?v=3"></script>
+  <script src="main.js?v=3"></script>
+  <script>
+    (function () {
+      Auth.applyRoleNav();
+      Auth.updateUserDisplay();
+
+      // Sidebar toggle
+      const toggleBtn = document.getElementById('sidebarToggle');
+      const sidebar = document.querySelector('.sidebar');
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+          sidebar.classList.add('collapsed');
+        }
+      }
+
+      const listContainer = document.getElementById('onlineAdminsList');
+      if (listContainer && Auth.isEmployee()) {
+        const fetchAdmins = async () => {
+          const admins = await Auth.fetchOnlineAdmins();
+          listContainer.innerHTML = admins.length > 0
+            ? admins.map(name => `<li><span class="emp-avatar">🛡️</span> ${name} (Online)</li>`).join('')
+            : '<li style="color: var(--muted);">No admins currently online</li>';
+        };
+        fetchAdmins();
+        setInterval(fetchAdmins, 30000);
+      }
+
+      // ===== Charts (Admin Only) =====
+      const growthCanvas = document.getElementById('employeeGrowthChart');
+      const deptCanvas = document.getElementById('departmentChart');
+
+      if (growthCanvas) {
+        const ctx = growthCanvas.getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 320);
+        gradient.addColorStop(0, 'rgba(99, 102, 241, 0.9)');
+        gradient.addColorStop(1, 'rgba(99, 102, 241, 0.3)');
+
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'],
+            datasets: [{
+              label: 'Total Employees',
+              data: [5, 8, 10, 14, 16, 20, 24, 28, 30, 32, 33, 35],
+              backgroundColor: gradient,
+              borderColor: 'rgba(99, 102, 241, 1)',
+              borderWidth: 2,
+              borderRadius: 6,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#1e293b',
+                titleFont: { size: 13, weight: '600' },
+                bodyFont: { size: 12 },
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                  label: function (context) {
+                    return ' ' + context.parsed.y + ' employees';
+                  }
+                }
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 40,
+                ticks: {
+                  stepSize: 5,
+                  font: { size: 12, weight: '500' },
+                  color: '#64748b',
+                  callback: function (value) { return value; }
+                },
+                grid: {
+                  color: 'rgba(226, 232, 240, 0.8)',
+                  drawBorder: false
+                },
+                border: { display: false }
+              },
+              x: {
+                ticks: {
+                  font: { size: 12, weight: '500' },
+                  color: '#64748b'
+                },
+                grid: { display: false },
+                border: { display: false }
+              }
+            }
+          }
+        });
+      }
+
+      if (deptCanvas) {
+        new Chart(deptCanvas.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Engineering', 'HR', 'Marketing', 'Operations'],
+            datasets: [{
+              data: [12, 8, 7, 8],
+              backgroundColor: [
+                'rgba(99, 102, 241, 0.85)',
+                'rgba(16, 185, 129, 0.85)',
+                'rgba(245, 158, 11, 0.85)',
+                'rgba(239, 68, 68, 0.85)'
+              ],
+              borderColor: '#fff',
+              borderWidth: 3,
+              hoverOffset: 8
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  padding: 16,
+                  usePointStyle: true,
+                  pointStyle: 'circle',
+                  font: { size: 12, weight: '500' },
+                  color: '#475569'
+                }
+              },
+              tooltip: {
+                backgroundColor: '#1e293b',
+                titleFont: { size: 13, weight: '600' },
+                bodyFont: { size: 12 },
+                padding: 12,
+                cornerRadius: 8,
+                callbacks: {
+                  label: function (context) {
+                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                    const pct = Math.round((context.parsed / total) * 100);
+                    return ' ' + context.label + ': ' + context.parsed + ' (' + pct + '%)';
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Account Menu Modal Logic
+      window.openAccountMenu = function () {
+        document.getElementById("accountMenuOverlay").classList.add("active");
+      };
+
+      var overlay = document.getElementById("accountMenuOverlay");
+      var closeBtn = document.getElementById("closeAccountMenu");
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          overlay.classList.remove("active");
+        };
+      }
+      if (overlay) {
+        overlay.onclick = function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove("active");
+          }
+        };
+      }
+      // Admin Welcome Greeting Logic
+      if (Auth.isAdmin()) {
+        const updateAdminGreeting = () => {
+          const now = new Date();
+          const hour = now.getHours();
+          const greetingEl = document.getElementById('adminGreeting');
+          const dateEl = document.getElementById('currentDate');
+          const timeEl = document.getElementById('currentTime');
+
+          let greeting = "Good Evening";
+          if (hour < 12) greeting = "Good Morning";
+          else if (hour < 18) greeting = "Good Afternoon";
+
+          if (greetingEl) greetingEl.innerHTML = `${greeting}, Admin!`;
+
+          if (dateEl) {
+            dateEl.innerText = now.toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+          }
+          if (timeEl) {
+            timeEl.innerText = now.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+          }
+        };
+
+        updateAdminGreeting();
+        setInterval(updateAdminGreeting, 1000);
+      }
+
+      // Employee Welcome Greeting Logic
+      if (Auth.isEmployee()) {
+        const updateEmployeeGreeting = () => {
+          const now = new Date();
+          const hour = now.getHours();
+          const greetingEl = document.getElementById('employeeGreeting');
+          const dateEl = document.getElementById('employeeCurrentDate');
+          const timeEl = document.getElementById('employeeCurrentTime');
+
+          let greeting = "Good Evening";
+          if (hour < 12) greeting = "Good Morning";
+          else if (hour < 18) greeting = "Good Afternoon";
+
+          if (greetingEl) {
+            const userName = Auth.getCurrentUser()?.name || '';
+            const firstName = userName.split(' ')[0] || 'Employee';
+            greetingEl.innerHTML = `${greeting}, ${firstName}!`;
+          }
+
+          if (dateEl) {
+            dateEl.innerText = now.toLocaleDateString('en-US', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+          }
+          if (timeEl) {
+            timeEl.innerText = now.toLocaleTimeString('en-US', {
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit'
+            });
+          }
+        };
+
+        updateEmployeeGreeting();
+        setInterval(updateEmployeeGreeting, 1000);
+      }
+    })();
+  </script>
+</body>
+
+</html>

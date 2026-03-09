@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Training & Development - Shopee HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" role="navigation" aria-label="Main menu">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="human reources pic.jpg" alt="Logo">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">HUMAN RESOURCES SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li><a href="Dashboard.html"><span class="nav-icon">■</span> Dashboard</a></li>
+        <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a></li>
+        <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+        <li data-admin-only class="active"><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+        <li data-employee-only><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Profile.html"><span class="nav-icon">📋</span> Personal Data Sheet</a></li>
+        <li data-employee-only><a href="Leave_History.html"><span class="nav-icon">📅</span> Leave History</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Top bar -->
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+            Dashboard</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <!-- Premium Content Header -->
+      <div class="emp-data-header-premium">
+        <div class="emp-header-content">
+          <div class="emp-header-icon-badge">📚</div>
+          <h1 class="emp-data-header-title">Training & Development</h1>
+        </div>
+      </div>
+
+      <!-- Training Stats Container -->
+      <div class="admin-stats-container">
+        <div class="admin-stat-card-premium card-theme-purple">
+          <div class="stat-icon-wrapper">📖</div>
+          <div class="stat-info-content">
+            <span class="stat-label-text">Total Courses</span>
+            <span class="stat-value-number">24</span>
+            <div class="stat-trend-indicator trend-up">↑ 2 New tracks added</div>
+          </div>
+        </div>
+        <div class="admin-stat-card-premium card-theme-green">
+          <div class="stat-icon-wrapper">🎓</div>
+          <div class="stat-info-content">
+            <span class="stat-label-text">Active Learners</span>
+            <span class="stat-value-number">156</span>
+            <div class="stat-trend-indicator trend-up">↑ 12% Engagement</div>
+          </div>
+        </div>
+        <div class="admin-stat-card-premium card-theme-orange">
+          <div class="stat-icon-wrapper">🏆</div>
+          <div class="stat-info-content">
+            <span class="stat-label-text">Completion Rate</span>
+            <span class="stat-value-number">88%</span>
+            <div class="stat-trend-indicator trend-none">Standard performance</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Refined Toolbar -->
+      <div class="emp-toolbar-refined" style="margin-bottom: 30px;">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="courseSearch" placeholder="Search courses, modules or certifications...">
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-add-primary" onclick="alert('Module to add course coming soon!')">
+            <span>+</span> Add Module
+          </button>
+          <button class="btn-filter-alt">
+            <span>▼</span> Filter
+          </button>
+        </div>
+      </div>
+
+      <div class="section-divider">Available Courses</div>
+
+      <!-- Course Grid -->
+      <div class="recruitment-actions-grid" style="margin-bottom: 40px;">
+        <div class="dashboard-section-card">
+          <div style="font-size: 2rem; margin-bottom: 15px;">💼</div>
+          <h3 style="margin-bottom: 10px; color: #1e293b;">Leadership Essentials</h3>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Master the art of team management and
+            strategic decision making.</p>
+          <div style="background: #f1f5f9; height: 8px; border-radius: 4px; margin-bottom: 10px;">
+            <div style="background: #5b4dc7; width: 65%; height: 100%; border-radius: 4px;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+            <span>65% Enrolled</span>
+            <span style="color: #5b4dc7;">12 Modules</span>
+          </div>
+        </div>
+
+        <div class="dashboard-section-card">
+          <div style="font-size: 2rem; margin-bottom: 15px;">🛡️</div>
+          <h3 style="margin-bottom: 10px; color: #1e293b;">Compliance & Safety</h3>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Mandatory annual training for workplace
+            safety and data privacy.</p>
+          <div style="background: #f1f5f9; height: 8px; border-radius: 4px; margin-bottom: 10px;">
+            <div style="background: #10b981; width: 92%; height: 100%; border-radius: 4px;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+            <span>92% Completed</span>
+            <span style="color: #10b981;">Mandatory</span>
+          </div>
+        </div>
+
+        <div class="dashboard-section-card">
+          <div style="font-size: 2rem; margin-bottom: 15px;">💻</div>
+          <h3 style="margin-bottom: 10px; color: #1e293b;">Technical Proficiency</h3>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px;">Advanced software tools and specialized
+            technical training paths.</p>
+          <div style="background: #f1f5f9; height: 8px; border-radius: 4px; margin-bottom: 10px;">
+            <div style="background: #f97316; width: 40%; height: 100%; border-radius: 4px;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600;">
+            <span>40% Enrolled</span>
+            <span style="color: #f97316;">Technical</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-divider">Latest Training Records</div>
+
+      <!-- Training Records Table -->
+      <div class="card"
+        style="padding: 0; overflow: hidden; border-radius: 16px; border: 1px solid #f1f5f9; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+        <div style="overflow-x:auto;">
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 0;">
+            <thead>
+              <tr style="background: #4f46e5; color: #fff;">
+                <th
+                  style="padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Employee</th>
+                <th
+                  style="padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Training Course</th>
+                <th
+                  style="padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Start Date</th>
+                <th
+                  style="padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Status</th>
+                <th
+                  style="padding: 16px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                  Score</th>
+              </tr>
+            </thead>
+            <tbody style="background: #fff; font-size: 0.9rem; color: #475569;">
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 16px;"><strong>Juan Dela Cruz</strong></td>
+                <td style="padding: 16px;">Leadership Essentials</td>
+                <td style="padding: 16px;">Mar 01, 2026</td>
+                <td style="padding: 16px;"><span
+                    style="background: #ecfdf5; color: #10b981; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">Completed</span>
+                </td>
+                <td style="padding: 16px; font-weight: 600;">95/100</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 16px;"><strong>Maria Santos</strong></td>
+                <td style="padding: 16px;">Cybersecurity Awareness</td>
+                <td style="padding: 16px;">Mar 05, 2026</td>
+                <td style="padding: 16px;"><span
+                    style="background: #fdf2f2; color: #ef4444; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">Not
+                    Started</span></td>
+                <td style="padding: 16px; font-weight: 600;">--</td>
+              </tr>
+              <tr style="border-bottom: 1px solid #f1f5f9;">
+                <td style="padding: 16px;"><strong>Pedro Reyes</strong></td>
+                <td style="padding: 16px;">Workplace Safety 2026</td>
+                <td style="padding: 16px;">Mar 02, 2026</td>
+                <td style="padding: 16px;"><span
+                    style="background: #fffbeb; color: #f59e0b; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;">In
+                    Progress</span></td>
+                <td style="padding: 16px; font-weight: 600;">--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js?v=4"></script>
+  <script>
+    (function () {
+      Auth.requireAuth();
+      Auth.applyRoleNav();
+      Auth.updateUserDisplay();
+
+      // Sidebar toggle
+      const toggleBtn = document.getElementById('sidebarToggle');
+      const sidebar = document.querySelector('.sidebar');
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+          sidebar.classList.add('collapsed');
+        }
+      }
+
+      // Account Menu Modal Logic
+      window.openAccountMenu = function () {
+        document.getElementById("accountMenuOverlay").classList.add("active");
+      };
+
+      var overlay = document.getElementById("accountMenuOverlay");
+      var closeBtn = document.getElementById("closeAccountMenu");
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          overlay.classList.remove("active");
+        };
+      }
+      if (overlay) {
+        overlay.onclick = function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove("active");
+          }
+        };
+      }
+    })();
+  </script>
+</body>
+
+</html>

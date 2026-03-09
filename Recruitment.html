@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recruitment - Shopee HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+  <style>
+    /* Action Buttons Styling */
+    .applicant-action-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      color: white !important;
+      margin: 0 4px;
+    }
+
+    .btn-edit-orange {
+      background: #f59e0b !important;
+      /* Vibrant Orange */
+      box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);
+    }
+
+    .btn-edit-orange:hover {
+      background: #d97706 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-view-blue {
+      background: #6366f1 !important;
+      /* Indigo Blue */
+      box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-view-blue:hover {
+      background: #4f46e5 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Modal consistency Fixes */
+    .emp-modal {
+      border-radius: 20px !important;
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" role="navigation" aria-label="Main menu">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="human reources pic.jpg" alt="Logo">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">SHOPPE HUMAN RESOURCES SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li><a href="Dashboard.html"><span class="nav-icon">■</span> Dashboard</a></li>
+        <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a></li>
+        <li data-admin-only class="active"><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a>
+        </li>
+        <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+        <li data-employee-only><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Profile.html"><span class="nav-icon">📋</span> Personal Data Sheet</a></li>
+        <li data-employee-only><a href="Leave_History.html"><span class="nav-icon">📅</span> Leave History</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Top bar -->
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+            Dashboard</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <!-- Premium Content Header -->
+      <div class="emp-data-header-premium">
+        <div class="emp-header-content">
+          <div class="emp-header-icon-badge">📋</div>
+          <h1 class="emp-data-header-title">Recruitment Data</h1>
+        </div>
+      </div>
+
+      <!-- Refined Toolbar: Search (Left) + Actions (Right) -->
+      <div class="emp-toolbar-refined" style="margin-bottom: 30px;">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchFilter" placeholder="Search applicants by name, position or stage...">
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-filter-alt" id="openFilterModal">
+            <span class="filter-icon">▼</span>
+            Filter
+            <span class="filter-count" id="activeFilterCount" style="display: none;">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="section-divider">Applicant List</div>
+      <div class="card"
+        style="padding: 0; overflow: hidden; margin-bottom: 30px; border-radius: 15px; border-top: 4px solid #4f46e5;">
+        <div style="overflow-x:auto;">
+          <table style="margin: 0;">
+            <thead id="applicantTableHeader">
+              <tr>
+                <th>Applicant Name</th>
+                <th>Position</th>
+                <th>Email</th>
+                <th>Applied Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="applicantTableBody">
+              <!-- Dynamic rows will be inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recruitment Actions -->
+      <div class="section-divider">Recruitment Actions</div>
+      <div class="recruitment-actions-grid">
+        <div class="recruitment-action-card">
+          <button class="btn-recruitment-large" onclick="JobManager.openModal()">Post Job</button>
+        </div>
+        <div class="recruitment-action-card">
+          <button class="btn-recruitment-large" onclick="ApplicantManager.viewAll()">View
+            Applications</button>
+        </div>
+        <div class="recruitment-action-card">
+          <button class="btn-recruitment-large" onclick="ApplicantManager.filter('Interview Scheduled')">Schedule
+            Interview</button>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- Post Job Modal -->
+  <div class="emp-modal-overlay" id="jobModal" aria-hidden="true">
+    <div class="emp-modal" style="max-width: 500px;">
+      <div class="emp-modal-header">
+        <span class="emp-modal-icon" style="font-size: 20px;">📢</span>
+        <h2>Post New Job</h2>
+        <button type="button" class="emp-modal-close" onclick="JobManager.closeModal()" aria-label="Close">×</button>
+      </div>
+      <form id="jobForm" class="emp-modal-body">
+        <label>Job Title <input type="text" id="jobTitle" required placeholder="Ex. Software Engineer"></label>
+        <label>Department
+          <select id="jobDepartment" required>
+            <option value="Engineering">Engineering</option>
+            <option value="Marketing">Marketing</option>
+            <option value="HR">HR</option>
+            <option value="Operations">Operations</option>
+          </select>
+        </label>
+        <label>Requirements <textarea id="jobRequirements" rows="3"
+            placeholder="List required skills..."></textarea></label>
+
+        <div class="emp-modal-footer">
+          <button type="button" class="btn-cancel-grey" onclick="JobManager.closeModal()">Cancel</button>
+          <button type="submit" class="btn-submit-green">Post Job</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Recruitment Filter Modal -->
+  <div class="emp-modal-overlay" id="filterModal" aria-hidden="true">
+    <div class="emp-modal" style="max-width: 800px;">
+      <div class="emp-modal-header">
+        <span class="emp-modal-icon">🔍</span>
+        <h2>Filter Applicants</h2>
+        <button type="button" class="emp-modal-close"
+          onclick="document.getElementById('filterModal').setAttribute('aria-hidden','true')">×</button>
+      </div>
+      <div class="filter-modal-body" style="padding: 20px;">
+        <div class="filter-group" style="margin-bottom: 20px;">
+          <span class="filter-section-title"
+            style="display: block; font-weight: 700; margin-bottom: 10px; color: #1e293b;">Positions</span>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="checkbox" name="f-pos" value="Senior Software Engineer"> Senior Software Engineer
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="checkbox" name="f-pos" value="Marketing Manager"> Marketing Manager
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="checkbox" name="f-pos" value="HR Specialist"> HR Specialist
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="checkbox" name="f-pos" value="Technical Support"> Technical Support
+          </label>
+        </div>
+        <div class="filter-group">
+          <span class="filter-section-title"
+            style="display: block; font-weight: 700; margin-bottom: 10px; color: #1e293b;">Stages</span>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="radio" name="f-stage" value="" checked> All Stages
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="radio" name="f-stage" value="Applied"> Applied
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="radio" name="f-stage" value="Under Review"> Under Review
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="radio" name="f-stage" value="Interview Scheduled"> Interview Scheduled
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="radio" name="f-stage" value="Hired"> Hired
+          </label>
+          <label class="filter-option" style="display: block; margin-bottom: 8px;">
+            <input type="radio" name="f-stage" value="Rejected"> Rejected
+          </label>
+        </div>
+      </div>
+      <div class="emp-modal-footer">
+        <button type="button" class="btn-cancel-grey"
+          onclick="document.getElementById('filterModal').setAttribute('aria-hidden','true')">Cancel</button>
+        <button type="button" class="btn-submit-green" id="applyFinalFilter">Apply Filters</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" aria-hidden="true"></div>
+
+  <!-- Applicant Detail Modal -->
+  <div class="emp-modal-overlay" id="viewDetailsModal" aria-hidden="true">
+    <div class="emp-modal" style="max-width: 800px;">
+      <div class="emp-modal-header" style="background: #4f46e5; color: white;">
+        <span class="emp-modal-icon">📄</span>
+        <h2 style="color: white;">Applicant Profile</h2>
+        <button type="button" class="emp-modal-close"
+          style="color: white; border: none; background: none; font-size: 24px; cursor: pointer;"
+          onclick="document.getElementById('viewDetailsModal').setAttribute('aria-hidden','true')">×</button>
+      </div>
+      <div class="emp-modal-body" id="detailModalBody" style="padding: 25px;">
+        <!-- Dynamic content here -->
+      </div>
+      <div class="emp-modal-footer">
+        <button type="button" class="btn-cancel-grey"
+          onclick="document.getElementById('viewDetailsModal').setAttribute('aria-hidden','true')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule Interview Modal -->
+  <div class="emp-modal-overlay" id="scheduleModal" aria-hidden="true">
+    <div class="emp-modal" style="max-width: 500px;">
+      <div class="emp-modal-header" style="background: #f59e0b; color: white;">
+        <span class="emp-modal-icon">📅</span>
+        <h2 style="color: white;">Schedule Interview</h2>
+        <button type="button" class="emp-modal-close"
+          style="color: white; border: none; background: none; font-size: 24px; cursor: pointer;"
+          onclick="document.getElementById('scheduleModal').setAttribute('aria-hidden','true')">×</button>
+      </div>
+      <form id="scheduleForm" class="emp-modal-body" style="padding: 20px;">
+        <input type="hidden" id="scheduleApplicantId">
+        <div style="margin-bottom: 15px;">
+          <p id="scheduleApplicantName" style="font-weight: 700; color: #1e293b; margin-bottom: 15px; font-size: 16px;">
+          </p>
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Interview Date</label>
+          <input type="date" id="interviewDate" required
+            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Interview Time</label>
+          <input type="time" id="interviewTime" required
+            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Interview Type</label>
+          <select id="interviewType" required
+            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+            <option value="Online">Online Interview</option>
+            <option value="Office">Office Interview</option>
+          </select>
+        </div>
+        <div class="emp-modal-footer" style="padding: 0; border-top: none;">
+          <button type="button" class="btn-cancel-grey"
+            onclick="document.getElementById('scheduleModal').setAttribute('aria-hidden','true')">Cancel</button>
+          <button type="submit" class="btn-submit-green" style="background: #f59e0b !important;">Save Schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+  <script src="auth.js?v=4"></script>
+  <script>
+    (function () {
+      Auth.requireAdmin();
+      Auth.applyRoleNav();
+      Auth.updateUserDisplay();
+    })();
+
+    const ApplicantManager = {
+      applicants: [],
+      currentFilter: 'All Stages',
+
+      async init() {
+        await this.loadApplicants();
+        await this.loadPositions();
+        document.getElementById('scheduleForm').addEventListener('submit', (e) => this.saveSchedule(e));
+
+        // Refined Toolbar & Filter Modal events
+        document.getElementById('searchFilter').addEventListener('input', () => this.filter());
+
+        const filterModal = document.getElementById('filterModal');
+        const openBtn = document.getElementById('openFilterModal');
+        const applyBtn = document.getElementById('applyFinalFilter');
+
+        if (openBtn) {
+          openBtn.onclick = () => filterModal.setAttribute('aria-hidden', 'false');
+        }
+
+        if (applyBtn) {
+          applyBtn.onclick = () => {
+            this.filter();
+            filterModal.setAttribute('aria-hidden', 'true');
+          };
+        }
+      },
+
+      async loadApplicants() {
+        console.log("Loading applicants...");
+        try {
+          const res = await fetch('get_applicants.php?t=' + new Date().getTime());
+          const data = await res.json();
+          if (data.success) {
+            this.applicants = data.applicants;
+            this.filter(this.currentFilter); // Re-apply current filter instead of just rendering
+          }
+        } catch (e) {
+          console.error("Failed to load applicants", e);
+        }
+      },
+
+      async loadPositions() {
+        try {
+          const res = await fetch('get_jobs.php?t=' + new Date().getTime());
+          const data = await res.json();
+          if (data.success) {
+            this.updatePositionDropdowns(data.jobs);
+          }
+        } catch (e) {
+          console.error("Failed to load positions", e);
+        }
+      },
+
+      updatePositionDropdowns(jobs) {
+        const select = document.getElementById('applicantPosition');
+        const filterGroup = document.querySelector('.filter-group'); // Target the Positions filter group
+
+        if (select) {
+          select.innerHTML = '<option value="" disabled selected>Select from the available positions</option>';
+          jobs.forEach(job => {
+            const opt = document.createElement('option');
+            opt.value = job.title;
+            opt.textContent = job.title;
+            select.appendChild(opt);
+          });
+        }
+
+        // Update Filter Modal Positions if the container exists
+        if (filterGroup) {
+          const sectionTitle = filterGroup.querySelector('.filter-section-title');
+          if (sectionTitle && sectionTitle.textContent === 'Positions') {
+            // Keep title, clear others
+            const existingOptions = filterGroup.querySelectorAll('.filter-option');
+            existingOptions.forEach(opt => opt.remove());
+
+            jobs.forEach(job => {
+              const label = document.createElement('label');
+              label.className = 'filter-option';
+              label.style.display = 'block';
+              label.style.bottom = '8px';
+              label.innerHTML = `<input type="checkbox" name="f-pos" value="${job.title}"> ${job.title}`;
+              filterGroup.appendChild(label);
+            });
+          }
+        }
+      },
+
+      async viewAll() {
+        console.log("Viewing all applications...");
+        await this.loadApplicants();
+        this.filter('All Stages');
+        const listSection = document.querySelector('.section-divider');
+        if (listSection) {
+          listSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      },
+
+      render(data = this.applicants) {
+        const tbody = document.getElementById('applicantTableBody');
+        const thead = document.getElementById('applicantTableHeader');
+        if (!tbody || !thead) return;
+
+        const isInterviewScheduled = this.currentFilter === 'Interview Scheduled';
+
+        // Update Header
+        thead.innerHTML = `
+          <tr>
+            <th>Applicant Name</th>
+            <th>Position</th>
+            <th>Email</th>
+            <th>Applied Date</th>
+            ${isInterviewScheduled ? '<th>Interview Date</th><th>Time</th>' : ''}
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        `;
+
+        // Update Rows
+        tbody.innerHTML = '';
+        data.forEach(app => {
+          if (isInterviewScheduled) {
+            console.log(`Rendering ${app.firstName}: Date=${app.interviewDate}, Time=${app.interviewTime}`);
+          }
+          const tr = document.createElement('tr');
+          const stageClass = this.getStageClass(app.stage);
+          tr.innerHTML = `
+            <td>${app.firstName} ${app.lastName}</td>
+            <td>${app.position}</td>
+            <td>${app.email || '-'}</td>
+            <td>${app.appliedDate}</td>
+            ${isInterviewScheduled ? `<td>${app.interviewDate || '-'}</td><td>${app.interviewTime || '-'}</td>` : ''}
+            <td><span class="status-badge ${stageClass}">${app.stage}</span></td>
+            <td>
+              <button class="applicant-action-btn btn-edit-orange" onclick="ApplicantManager.edit(${app.id})" title="Schedule Interview">✎</button>
+              <button class="applicant-action-btn btn-view-blue" onclick="ApplicantManager.view(${app.id})" title="View Details">👁</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      },
+
+      getStageClass(stage) {
+        switch (stage) {
+          case 'Hired': return 'status-active';
+          case 'Rejected': return 'status-rejected';
+          case 'Applied': return 'status-applied';
+          case 'Under Review': return 'status-screening';
+          case 'Interview Scheduled': return 'status-interview';
+          default: return 'status-applied';
+        }
+      },
+
+      openModal(app = null) {
+        // Feature removed as requested
+      },
+
+      closeModal() {
+        // Feature removed as requested
+      },
+
+      async handleSubmit(e) {
+        // Feature removed as requested
+      },
+
+      edit(id) {
+        const app = this.applicants.find(a => a.id == id);
+        if (!app) return;
+
+        document.getElementById('scheduleApplicantId').value = app.id;
+        document.getElementById('scheduleApplicantName').textContent = `Applicant: ${app.firstName} ${app.lastName}`;
+        document.getElementById('interviewDate').value = app.interviewDate ? app.interviewDate : '';
+        document.getElementById('interviewTime').value = app.interviewTime ? app.interviewTime : '10:00';
+        document.getElementById('interviewType').value = app.interviewType ? app.interviewType : 'Online';
+
+        document.getElementById('scheduleModal').setAttribute('aria-hidden', 'false');
+      },
+
+      async saveSchedule(e) {
+        e.preventDefault();
+        const id = document.getElementById('scheduleApplicantId').value;
+        const data = {
+          id: id,
+          interviewDate: document.getElementById('interviewDate').value,
+          interviewTime: document.getElementById('interviewTime').value,
+          interviewType: document.getElementById('interviewType').value,
+          stage: 'Interview Scheduled'
+        };
+        alert("Sending to DB: " + JSON.stringify(data));
+        console.log("Saving schedule for applicant:", data);
+
+        try {
+          const res = await fetch('update_applicant.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const result = await res.json();
+          if (result.success) {
+            alert('Interview scheduled successfully!');
+            document.getElementById('scheduleModal').setAttribute('aria-hidden', 'true');
+            // We reload and stay on the interview filter
+            this.currentFilter = 'Interview Scheduled';
+            await this.loadApplicants();
+          } else {
+            alert(result.message || 'Failed to schedule interview');
+          }
+        } catch (err) {
+          alert('Error: ' + err.message);
+        }
+      },
+
+      view(id) {
+        const app = this.applicants.find(a => a.id == id);
+        if (!app) return;
+
+        const container = document.getElementById('detailModalBody');
+        const resumeLink = app.resumePath ? `<a href="${app.resumePath}" target="_blank" class="btn-recruitment-large" style="display:inline-block; font-size:14px; text-decoration:none; text-align:center; width:auto; padding:10px 20px;">Open Resume 📄</a>` : '<span style="color:#64748b;">No resume uploaded</span>';
+
+        container.innerHTML = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div>
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Full Name</p>
+              <h3 style="margin: 0; color: #1e293b; font-size: 18px;">${app.firstName} ${app.lastName}</h3>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Current Status</p>
+              <span class="status-badge ${this.getStageClass(app.stage)}" id="detailStatusBadge">${app.stage}</span>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Email Address</p>
+              <p style="margin: 0; color: #1e293b;">${app.email || 'N/A'}</p>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Phone Number</p>
+              <p style="margin: 0; color: #1e293b;">${app.phone || 'N/A'}</p>
+            </div>
+            <div style="grid-column: span 2;">
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Address</p>
+              <p style="margin: 0; color: #1e293b;">${app.address || 'N/A'}</p>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Position Applied</p>
+              <p style="margin: 0; color: #1e293b; font-weight: 600;">${app.position}</p>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Applied Date</p>
+              <p style="margin: 0; color: #1e293b;">${app.appliedDate}</p>
+            </div>
+          </div>
+
+          ${app.stage === 'Interview Scheduled' ? `
+          <div style="background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #fde68a; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+            <div style="grid-column: span 3; border-bottom: 1px solid #fde68a; padding-bottom: 10px; margin-bottom: 5px;">
+               <p style="margin: 0; color: #92400e; font-weight: 700; font-size: 14px; text-transform: uppercase;">📅 Interview Scheduled Details</p>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #b45309; font-size: 12px; font-weight: 600; text-transform: uppercase;">Date</p>
+              <p style="margin: 0; color: #78350f; font-weight: 600;">${app.interviewDate || 'Not set'}</p>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #b45309; font-size: 12px; font-weight: 600; text-transform: uppercase;">Time</p>
+              <p style="margin: 0; color: #78350f; font-weight: 600;">${app.interviewTime || 'Not set'}</p>
+            </div>
+            <div>
+              <p style="margin: 0 0 5px; color: #b45309; font-size: 12px; font-weight: 600; text-transform: uppercase;">Type</p>
+              <p style="margin: 0; color: #78350f; font-weight: 600;">${app.interviewType || 'Online'}</p>
+            </div>
+          </div>
+          ` : ''}
+
+          <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #e2e8f0;">
+            <p style="margin: 0 0 10px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Cover Letter</p>
+            <p style="margin: 0; line-height: 1.6; color: #334155; white-space: pre-wrap;">${app.coverLetter || 'No cover letter provided.'}</p>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+            <div>
+               <p style="margin: 0 0 10px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Quick Actions</p>
+               ${resumeLink}
+            </div>
+            <div style="text-align: right;">
+              <p style="margin: 0 0 10px; color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase;">Update Stage</p>
+              <select id="quickStageUpdate" style="padding: 8px 12px; border-radius: 8px; border: 1px solid #cbd5e1; outline: none; margin-right: 10px;">
+                <option value="Applied" ${app.stage === 'Applied' ? 'selected' : ''}>Applied</option>
+                <option value="Under Review" ${app.stage === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                <option value="Interview Scheduled" ${app.stage === 'Interview Scheduled' ? 'selected' : ''}>Interview Scheduled</option>
+                <option value="Hired" ${app.stage === 'Hired' ? 'selected' : ''}>Hired</option>
+                <option value="Rejected" ${app.stage === 'Rejected' ? 'selected' : ''}>Rejected</option>
+              </select>
+              <button onclick="ApplicantManager.updateStage(${app.id})" class="btn-submit-green" style="padding: 9px 15px; font-size:13px; width:auto;">Update</button>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('viewDetailsModal').setAttribute('aria-hidden', 'false');
+      },
+
+      async updateStage(id) {
+        const newStage = document.getElementById('quickStageUpdate').value;
+        const app = this.applicants.find(a => a.id == id);
+        if (!app) return;
+
+        try {
+          const res = await fetch('update_applicant.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id: id,
+              firstName: app.firstName,
+              lastName: app.lastName,
+              email: app.email,
+              phone: app.phone,
+              address: app.address,
+              position: app.position,
+              stage: newStage,
+              interviewDate: app.interviewDate,
+              interviewTime: app.interviewTime,
+              interviewType: app.interviewType,
+              appliedDate: app.appliedDate
+            })
+          });
+          const data = await res.json();
+          if (data.success) {
+            alert('Stage updated successfully!');
+            app.stage = newStage;
+
+            // Update UI in detail modal if still open
+            const badge = document.getElementById('detailStatusBadge');
+            if (badge) {
+              badge.textContent = newStage;
+              badge.className = `status-badge ${this.getStageClass(newStage)}`;
+            }
+
+            this.render(); // Update table
+          } else {
+            alert(data.message);
+          }
+        } catch (err) {
+          alert('Failed to update stage: ' + err.message);
+        }
+      },
+
+      filter(forceStage = null) {
+        const search = document.getElementById('searchFilter').value.toLowerCase();
+        const selectedPositions = Array.from(document.querySelectorAll('input[name="f-pos"]:checked')).map(cb => cb.value);
+
+        let selectedStage;
+        if (forceStage) {
+          this.currentFilter = forceStage;
+          selectedStage = (forceStage === 'All Stages' ? '' : forceStage);
+          // Sync radio buttons
+          const radio = document.querySelector(`input[name="f-stage"][value="${selectedStage}"]`);
+          if (radio) radio.checked = true;
+
+          // Reset position filters when using the quick action buttons
+          document.querySelectorAll('input[name="f-pos"]').forEach(cb => cb.checked = false);
+        } else {
+          selectedStage = document.querySelector('input[name="f-stage"]:checked')?.value || "";
+          this.currentFilter = selectedStage || 'All Stages';
+        }
+
+        const filtered = this.applicants.filter(app => {
+          const matchesSearch = (app.firstName + ' ' + app.lastName).toLowerCase().includes(search) ||
+            app.position.toLowerCase().includes(search);
+
+          const matchesPosition = selectedPositions.length === 0 || selectedPositions.includes(app.position);
+          const matchesStage = selectedStage === "" ||
+            (selectedStage === 'All Stages' ? true : app.stage === selectedStage) ||
+            (selectedStage === 'Interview Scheduled' && app.stage === 'Interview Scheduled');
+
+          return matchesSearch && matchesPosition && matchesStage;
+        });
+
+        // Update active filter count badge
+        const countBadge = document.getElementById('activeFilterCount');
+        const activeCount = selectedPositions.length + (selectedStage ? 1 : 0);
+        if (countBadge) {
+          if (activeCount > 0) {
+            countBadge.textContent = activeCount;
+            countBadge.style.display = 'inline-flex';
+          } else {
+            countBadge.style.display = 'none';
+          }
+        }
+
+        this.render(filtered);
+      }
+    };
+
+    const JobManager = {
+      init() {
+        const form = document.getElementById('jobForm');
+        if (form) form.addEventListener('submit', (e) => this.handleJobSubmit(e));
+      },
+      openModal() {
+        document.getElementById('jobForm').reset();
+        document.getElementById('jobModal').setAttribute('aria-hidden', 'false');
+      },
+      closeModal() {
+        document.getElementById('jobModal').setAttribute('aria-hidden', 'true');
+      },
+      async handleJobSubmit(e) {
+        e.preventDefault();
+        const data = {
+          title: document.getElementById('jobTitle').value,
+          department: document.getElementById('jobDepartment').value,
+          requirements: document.getElementById('jobRequirements').value
+        };
+
+        try {
+          const res = await fetch('post_job.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          const result = await res.json();
+          if (result.success) {
+            alert('Job Posted Successfully!');
+            this.closeModal();
+            ApplicantManager.loadPositions(); // Refresh positions list
+          } else {
+            alert(result.message);
+          }
+        } catch (err) {
+          alert('Failed to post job: ' + err.message);
+        }
+      }
+    };
+
+    // Initialize Managers
+    ApplicantManager.init();
+    JobManager.init();
+
+    // Sidebar toggle and Account Menu
+    (function () {
+      const toggleBtn = document.getElementById('sidebarToggle');
+      const sidebar = document.querySelector('.sidebar');
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+          sidebar.classList.add('collapsed');
+        }
+      }
+
+      window.openAccountMenu = function () {
+        document.getElementById("accountMenuOverlay").classList.add("active");
+      };
+
+      var overlay = document.getElementById("accountMenuOverlay");
+      var closeBtn = document.getElementById("closeAccountMenu");
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          overlay.classList.remove("active");
+        };
+      }
+      if (overlay) {
+        overlay.onclick = function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove("active");
+          }
+        };
+      }
+    })();
+  </script>
+</body>
+
+</html>

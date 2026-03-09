@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Shopee HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+</head>
+
+<body class="auth-page auth-page-purple">
+
+  <!-- Public Header Navigation -->
+  <header class="public-header">
+    <div class="header-logo">
+      <!-- Optional: Add logo text here if needed, or leave blank to match screenshot -->
+    </div>
+    <div class="header-actions">
+      <button class="btn-public-nav btn-about" onclick="window.location.href='About.html'">
+        <span class="nav-icon-box">ℹ️</span> About Us
+      </button>
+      <button class="btn-public-nav btn-apply" onclick="window.location.href='Careers.html'">
+        <span class="nav-icon-box">📞</span> Apply Now
+      </button>
+    </div>
+  </header>
+
+  <div class="auth-container">
+    <!-- Portal Selection View -->
+    <div id="portalSelection" class="auth-box portal-box">
+      <div class="portal-logo-container">
+        <!-- Using the human reources pic.jpg from the directory -->
+        <img src="human reources pic.jpg" alt="Shopee HR Logo" class="portal-image-logo">
+      </div>
+      <h1 class="portal-title">Human Resources<br>Shoppe System</h1>
+
+      <button class="btn-portal btn-employee" onclick="showLoginForm('employee')">
+        <span class="portal-icon">👤</span> EMPLOYEE PORTAL
+      </button>
+      <button class="btn-portal btn-admin" onclick="showLoginForm('admin')">
+        <span class="portal-icon">👥</span> ADMIN PORTAL
+      </button>
+
+    </div>
+
+    <!-- Login Form View -->
+    <div id="loginFormContainer" class="auth-box" style="display: none;">
+      <button type="button" class="btn-back-portal" onclick="showPortalSelection()">
+        ⬅️ Back
+      </button>
+      <h1 class="auth-logo" id="loginTitle">Login</h1>
+      <p class="auth-tagline">Sign in to your account</p>
+
+      <div class="auth-form-section">
+        <form id="loginForm" class="auth-form">
+          <label>Username</label>
+          <div class="input-group">
+            <span class="input-icon">👤</span>
+            <input class="auth-input" type="text" name="username" placeholder="username" />
+          </div>
+
+          <label>Email</label>
+          <div class="input-group">
+            <span class="input-icon">✉️</span>
+            <input class="auth-input" type="email" name="email" placeholder="example@company.com" required />
+          </div>
+
+          <label>Password</label>
+          <div class="input-group">
+            <span class="input-icon">🔒</span>
+            <input class="auth-input" type="password" name="password" placeholder="••••••••" required />
+          </div>
+
+
+          <input type="hidden" name="role" id="loginRole" value="employee" />
+
+          <button type="submit" class="btn-primary">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="auth.js?v=3"></script>
+    <script>
+      (function () {
+        if (Auth.getSession()) {
+          window.location.href = 'Dashboard.html';
+          return;
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+          e.preventDefault();
+
+          const form = e.target;
+          const email = form.email.value.trim();
+          const password = form.password.value;
+          const role = form.role.value;
+
+          if (!email || !password) {
+            alert('Please fill in all fields.');
+            return;
+          }
+
+          try {
+            const result = await Auth.login({
+              email: email,
+              password: password,
+              role: role
+            });
+
+            if (result && result.require_otp) {
+              window.location.href = 'verify_otp.php';
+            } else {
+              window.location.href = 'Dashboard.html';
+            }
+          } catch (error) {
+            alert(error.message);
+          }
+
+        });
+      })();
+
+      // UI navigation between Portal and Login Forms
+      function showLoginForm(role) {
+        document.getElementById('portalSelection').style.display = 'none';
+        document.getElementById('loginFormContainer').style.display = 'block';
+
+        // Update Title and default role selection
+        const titleSpan = role === 'admin' ? 'Admin Login' : 'Employee Login';
+        document.getElementById('loginTitle').innerText = titleSpan;
+
+        // Find and set the role input
+        const roleInput = document.querySelector('[name="role"]');
+        if (roleInput) {
+          roleInput.value = role;
+        }
+      }
+
+      function showPortalSelection() {
+        document.getElementById('loginFormContainer').style.display = 'none';
+        document.getElementById('portalSelection').style.display = 'flex';
+      }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Careers - Apply Now | Shopee HR</title>
+    <link rel="stylesheet" href="Shoppehr.css" />
+    <style>
+        .careers-page {
+            /* Now using .auth-page-purple from Shoppehr.css to match Login.html exactly */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        .careers-container {
+            max-width: 500px;
+            /* Reduced from 600px */
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            /* Reduced from 50px */
+            animation: fadeIn 0.5s ease;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            /* Moved from right to left so it doesn't block right-aligned items */
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .page-header {
+            margin-top: 35px;
+            /* Added to prevent overlap with back button */
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .apply-form label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+            margin-top: 20px;
+        }
+
+        .apply-form input[type="text"],
+        .apply-form input[type="email"],
+        .apply-form input[type="password"],
+        .apply-form select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #1e293b;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .apply-form input:focus,
+        .apply-form select:focus {
+            outline: none;
+            border-color: #5b4dc7;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(91, 77, 199, 0.1);
+        }
+
+        .apply-name-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* File Upload Styling */
+        .file-upload-wrapper {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #5b4dc7;
+            background: #f1f5f9;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
+
+        .btn-submit-apply {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-submit-apply:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+    </style>
+</head>
+
+<body class="careers-page auth-page-purple">
+
+    <div class="careers-container">
+        <a href="Login.html" class="back-btn">⬅️ Back to Login</a>
+
+        <div class="page-header">
+            <h1>Application Information</h1>
+            <p>Please fill in the following details</p>
+        </div>
+
+        <form id="applyForm" class="apply-form">
+            <div class="apply-name-group">
+                <div>
+                    <label>First Name</label>
+                    <input type="text" id="firstName" required placeholder="Ex. Juan">
+                </div>
+                <div>
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" required placeholder="Ex. Dela Cruz">
+                </div>
+            </div>
+
+            <div class="apply-name-group">
+                <div>
+                    <label>Phone Number</label>
+                    <input type="text" id="phone" required placeholder="09xxxxxxxxx">
+                </div>
+                <div>
+                    <label>Email Address</label>
+                    <input type="email" id="email" required placeholder="juan@example.com">
+                </div>
+            </div>
+
+            <label>Current Address</label>
+            <textarea id="address" required placeholder="Street, City, Province"
+                style="width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; background: #f8fafc; font-family: inherit; margin-top: 8px;"></textarea>
+
+            <label>Position Applying For</label>
+            <select id="position" required>
+                <option value="" disabled selected>Loading positions...</option>
+            </select>
+
+            <label>Upload Resume</label>
+            <div class="file-upload-wrapper">
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                <div class="upload-icon">📄</div>
+                <div class="upload-text">Click to browse or drag & drop</div>
+                <div class="upload-hint">Supported formats: PDF or DOC (Max 5MB)</div>
+                <div id="fileName" style="margin-top:10px; font-weight: 600; color: #5b4dc7; display:none;"></div>
+            </div>
+
+            <label>Cover Letter (Optional)</label>
+            <textarea id="coverLetter" placeholder="Tell us why you're a great fit..."
+                style="width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 14px; background: #f8fafc; font-family: inherit; margin-top: 8px;"></textarea>
+
+            <button type="submit" class="btn-submit-apply">Submit Application</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch and populate positions dynamically
+        async function fetchPositions() {
+            try {
+                const res = await fetch('get_jobs.php');
+                const data = await res.json();
+                if (data.success) {
+                    const select = document.getElementById('position');
+                    // Keep the first default option
+                    select.innerHTML = '<option value="" disabled selected>Select from the available positions</option>';
+                    data.jobs.forEach(job => {
+                        const opt = document.createElement('option');
+                        opt.value = job.title;
+                        opt.textContent = job.title;
+                        select.appendChild(opt);
+                    });
+                }
+            } catch (err) {
+                console.error("Failed to load positions", err);
+            }
+        }
+
+        fetchPositions();
+
+        document.getElementById('resume').addEventListener('change', function (e) {
+            const fileNameDisplay = document.getElementById('fileName');
+            if (e.target.files.length > 0) {
+                fileNameDisplay.textContent = 'Selected: ' + e.target.files[0].name;
+                fileNameDisplay.style.display = 'block';
+            } else {
+                fileNameDisplay.style.display = 'none';
+            }
+        });
+
+        document.getElementById('applyForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('firstName', document.getElementById('firstName').value);
+            formData.append('lastName', document.getElementById('lastName').value);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('position', document.getElementById('position').value);
+            formData.append('coverLetter', document.getElementById('coverLetter').value);
+
+            const resumeFile = document.getElementById('resume').files[0];
+            if (resumeFile) {
+                formData.append('resume', resumeFile);
+            }
+
+            try {
+                const res = await fetch('apply_job.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    alert("Application submitted successfully! Our HR team will review your application.");
+                    window.location.href = 'Login.html';
+                } else {
+                    alert(data.message || 'There was an error submitting your application.');
+                }
+            } catch (err) {
+                alert("Failed to connect to the server.");
+            }
+        });
+    </script>
+</body>
+
+</html>

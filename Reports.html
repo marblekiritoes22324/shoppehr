@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytical Reports - Shopee HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+</head>
+
+<body>
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar" role="navigation" aria-label="Main menu">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="human reources pic.jpg" alt="Logo">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">HUMAN RESOURCES SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li><a href="Dashboard.html"><span class="nav-icon">■</span> Dashboard</a></li>
+        <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a></li>
+        <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+        <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only class="active"><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+        <li data-employee-only><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Profile.html"><span class="nav-icon">📋</span> Personal Data Sheet</a></li>
+        <li data-employee-only><a href="Leave_History.html"><span class="nav-icon">📅</span> Leave History</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Top bar -->
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+            Dashboard</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <!-- Premium Content Header -->
+      <div class="emp-data-header-premium">
+        <div class="emp-header-content">
+          <div class="emp-header-icon-badge">📈</div>
+          <h1 class="emp-data-header-title">Analytical Reports</h1>
+        </div>
+        <div class="report-controls" style="display: flex; gap: 12px; align-items: center;">
+          <select
+            style="padding: 10px 16px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.15); color: white; border-radius: 10px; font-size: 14px; outline: none; backdrop-filter: blur(10px);">
+            <option style="color: black;">Last 30 Days</option>
+            <option style="color: black;">Last Quarter</option>
+            <option style="color: black;">Year to Date</option>
+          </select>
+          <button class="btn-add-primary" onclick="window.print()"
+            style="background: white; color: #4f46e5; border-radius: 10px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+            <span>📄</span> Export PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Metrics -->
+      <div class="admin-stats-container">
+        <div class="admin-stat-card-premium card-theme-purple">
+          <div class="stat-icon-wrapper">📅</div>
+          <div class="stat-info-content">
+            <span class="stat-label-text">Attendance Rate</span>
+            <span class="stat-value-number">92%</span>
+            <div class="stat-trend-indicator trend-up">↑ 1.2% from last week</div>
+          </div>
+        </div>
+        <div class="admin-stat-card-premium card-theme-orange">
+          <div class="stat-icon-wrapper">🔄</div>
+          <div class="stat-info-content">
+            <span class="stat-label-text">Turnover Rate</span>
+            <span class="stat-value-number">12%</span>
+            <div class="stat-trend-indicator trend-down">↓ 0.5% Improved</div>
+          </div>
+        </div>
+        <div class="admin-stat-card-premium card-theme-green">
+          <div class="stat-icon-wrapper">⭐</div>
+          <div class="stat-info-content">
+            <span class="stat-label-text">Training Satisfaction</span>
+            <span class="stat-value-number">4.2/5</span>
+            <div class="stat-trend-indicator trend-up">↑ 0.3 Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Reports Grid -->
+      <div class="dashboard-grid" style="grid-template-columns: 1.5fr 1fr; gap: 24px; margin-top: 24px;">
+        <div class="dashboard-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 class="panel-title" style="margin: 0;">📈 Monthly Employee Growth</h3>
+            <span style="font-size: 12px; color: var(--muted); font-weight: 500;">Oct 2025 - Feb 2026</span>
+          </div>
+          <div style="position: relative; height: 320px; width: 100%;">
+            <canvas id="growthChart"></canvas>
+          </div>
+        </div>
+
+        <div class="dashboard-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 class="panel-title" style="margin: 0;">🏢 Department Distribution</h3>
+          </div>
+          <div
+            style="position: relative; height: 320px; width: 100%; display: flex; align-items: center; justify-content: center;">
+            <canvas id="deptChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Data Row -->
+      <div class="dashboard-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-top: 24px;">
+        <div class="dashboard-section-card">
+          <h4
+            style="color: #64748b; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px;">
+            Hiring Pipeline</h4>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 500;">Applications</span>
+              <span style="background: #f1f5f9; padding: 2px 8px; border-radius: 6px; font-weight: 700;">84</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 500;">Interviews</span>
+              <span style="background: #f1f5f9; padding: 2px 8px; border-radius: 6px; font-weight: 700;">12</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 14px; font-weight: 500;">Hired</span>
+              <span style="background: #f1f5f9; padding: 2px 8px; border-radius: 6px; font-weight: 700;">4</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-section-card">
+          <h4
+            style="color: #64748b; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px;">
+            Employee Age Group</h4>
+          <div style="position: relative; height: 120px;">
+            <canvas id="ageChart"></canvas>
+          </div>
+        </div>
+
+        <div class="dashboard-section-card">
+          <h4
+            style="color: #64748b; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 20px;">
+            Performance Overview</h4>
+          <div style="display: flex; align-items: center; justify-content: center; height: 120px;">
+            <div style="text-align: center;">
+              <div style="font-size: 32px; font-weight: 800; color: #4f46e5;">8.4</div>
+              <div style="font-size: 12px; color: #64748b; font-weight: 600;">Average KPI Score</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="auth.js?v=4"></script>
+  <script>
+    (function () {
+      Auth.requireAuth();
+      Auth.requireAdmin();
+      Auth.applyRoleNav();
+      Auth.updateUserDisplay();
+
+      // Sidebar toggle
+      const toggleBtn = document.getElementById('sidebarToggle');
+      const sidebar = document.querySelector('.sidebar');
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('collapsed');
+          localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        });
+        if (localStorage.getItem('sidebarCollapsed') === 'true') {
+          sidebar.classList.add('collapsed');
+        }
+      }
+
+      // Account Menu Modal Logic
+      window.openAccountMenu = function () {
+        document.getElementById("accountMenuOverlay").classList.add("active");
+      };
+
+      var overlay = document.getElementById("accountMenuOverlay");
+      var closeBtn = document.getElementById("closeAccountMenu");
+      if (closeBtn) {
+        closeBtn.onclick = function () {
+          overlay.classList.remove("active");
+        };
+      }
+      if (overlay) {
+        overlay.onclick = function (e) {
+          if (e.target === overlay) {
+            overlay.classList.remove("active");
+          }
+        };
+      }
+
+      // Initialize Charts
+      const growthCtx = document.getElementById('growthChart').getContext('2d');
+      const growthGradient = growthCtx.createLinearGradient(0, 0, 0, 320);
+      growthGradient.addColorStop(0, 'rgba(99, 102, 241, 0.4)');
+      growthGradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
+
+      new Chart(growthCtx, {
+        type: 'line',
+        data: {
+          labels: ['Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+          datasets: [{
+            label: 'Total Employees',
+            data: [42, 48, 45, 52, 58],
+            borderColor: '#6366f1',
+            backgroundColor: growthGradient,
+            fill: true,
+            tension: 0.4,
+            pointBackgroundColor: '#fff',
+            pointBorderColor: '#6366f1',
+            pointBorderWidth: 2,
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { beginAtZero: true, grid: { color: '#f1f5f9' }, border: { display: false } },
+            x: { grid: { display: false }, border: { display: false } }
+          }
+        }
+      });
+
+      new Chart(document.getElementById('deptChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: ['Engineering', 'Marketing', 'HR', 'Operations'],
+          datasets: [{
+            data: [45, 25, 15, 15],
+            backgroundColor: ['#6366f1', '#f59e0b', '#10b981', '#ef4444'],
+            borderWidth: 0,
+            hoverOffset: 12
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '70%',
+          plugins: {
+            legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+          }
+        }
+      });
+
+      new Chart(document.getElementById('ageChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: ['18-25', '26-35', '36-45', '46+'],
+          datasets: [{
+            data: [12, 28, 15, 8],
+            backgroundColor: '#4f46e5',
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { display: false },
+            y: { grid: { display: false }, border: { display: false } }
+          }
+        }
+      });
+
+    })();
+  </script>
+</body>
+
+</html>

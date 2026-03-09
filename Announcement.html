@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Announcements - ShoppeHR</title>
+    <link rel="stylesheet" href="Shoppehr.css?v=4" />
+</head>
+
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <div class="logo-icon">
+                    <img src="human reources pic.jpg" alt="Logo">
+                </div>
+                <div class="logo-text">
+                    <span class="logo-title">HUMAN RESOURCE</span>
+                    <span class="logo-subtitle">EMPLOYEE INFORMATION SYSTEM</span>
+                </div>
+            </div>
+            <ul>
+                <li><a href="Dashboard.html"><span class="nav-icon">📊</span> Dashboard</a></li>
+                <li><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+                <li class="active"><a href="Announcement.html"><span class="nav-icon">📢</span> Announcement</a></li>
+                <li><a href="Schedule.html"><span class="nav-icon">📅</span> Work Schedule</a></li>
+
+                <li data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span> Employees</a>
+                </li>
+                <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+                <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+                <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Top bar -->
+            <header class="dashboard-header">
+                <div class="header-user">
+                    <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="user-avatar">
+                        <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name" data-user-display="name">--</span>
+                        <span class="user-role" data-role-display>--</span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+                    <span class="logout-link" onclick="Auth.logout()">Logout</span>
+                </div>
+            </header>
+
+            <div class="content-wrapper" style="padding: 24px;">
+                <h2 style="margin-bottom: 24px; color: #1e293b;">📢 Company Announcements</h2>
+
+                <div class="dashboard-section-card" style="margin-bottom: 24px;">
+                    <div class="announcement-item"
+                        style="border-left-color: #5b4dc7; background: #fff; border: 1px solid #f1f5f9; border-left: 4px solid #5b4dc7;">
+                        <div class="announcement-meta">
+                            <span style="font-weight: 700; color: #5b4dc7;">SYSTEM UPDATE</span>
+                            <span>March 8, 2026</span>
+                        </div>
+                        <h3 style="margin: 10px 0; font-size: 1.1rem;">New Payroll Integration Live</h3>
+                        <p class="announcement-text">
+                            We have successfully integrated our new payroll system. All employees are required to verify
+                            their bank account details in the Personal Data Sheet section by end of this week to ensure
+                            timely salary processing.
+                        </p>
+                    </div>
+
+                    <div class="announcement-item"
+                        style="border-left-color: #10b981; background: #fff; border: 1px solid #f1f5f9; border-left: 4px solid #10b981;">
+                        <div class="announcement-meta">
+                            <span style="font-weight: 700; color: #10b981;">EVENT</span>
+                            <span>March 5, 2026</span>
+                        </div>
+                        <h3 style="margin: 10px 0; font-size: 1.1rem;">Summer Outing 2026</h3>
+                        <p class="announcement-text">
+                            Registration for our annual company summer outing is now officially open! Join us for a
+                            weekend of team-building and relaxation at the Crystal Beach Resort. Deadline for
+                            registration is Friday, March 12.
+                        </p>
+                    </div>
+
+                    <div class="announcement-item"
+                        style="border-left-color: #f97316; background: #fff; border: 1px solid #f1f5f9; border-left: 4px solid #f97316;">
+                        <div class="announcement-meta">
+                            <span style="font-weight: 700; color: #f97316;">REMINDER</span>
+                            <span>March 1, 2026</span>
+                        </div>
+                        <h3 style="margin: 10px 0; font-size: 1.1rem;">Quarterly Performance Review</h3>
+                        <p class="announcement-text">
+                            Please be reminded that the Q1 Performance Reviews will commence next week. Kindly prepare
+                            your self-assessment forms and coordinate with your immediate supervisors for your schedule.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Account Menu Modal -->
+    <div class="account-menu-overlay" id="accountMenuOverlay">
+        <!-- Same Modal Structure as Dashboard -->
+    </div>
+
+    <script src="auth.js?v=3"></script>
+    <script src="main.js?v=3"></script>
+    <script>
+        Auth.applyRoleNav();
+        Auth.updateUserDisplay();
+        // Sidebar toggle logic
+        const toggleBtn = document.getElementById('sidebarToggle');
+        const sidebar = document.querySelector('.sidebar');
+        if (toggleBtn && sidebar) {
+            toggleBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+        }
+    </script>
+</body>
+
+</html>

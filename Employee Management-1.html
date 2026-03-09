@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Management - Shopee HR</title>
+  <link rel="stylesheet" href="Shoppehr.css" />
+  <style>
+    /* Defensive styles for toolbar and buttons */
+    .emp-toolbar-refined {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-add-employee,
+    .btn-filter-alt {
+      cursor: pointer !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ensure modal overlays are correctly layered */
+    .emp-modal-overlay {
+      z-index: 10000 !important;
+      /* Extremely high to be above everything */
+    }
+
+    .account-menu-overlay {
+      z-index: 10001 !important;
+    }
+
+    /* Enlarge and Optimize Modals */
+    .emp-modal {
+      max-width: 800px !important;
+      width: 95% !important;
+      border-radius: 20px !important;
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .emp-modal-body {
+      padding: 24px 40px !important;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .emp-form-two-col {
+      gap: 30px !important;
+    }
+
+    /* Optimize Document Upload Cards */
+    .file-upload-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 20px !important;
+    }
+
+    .file-upload-card {
+      padding: 20px 15px !important;
+      min-height: 140px;
+    }
+
+    .upload-icon {
+      width: 48px !important;
+      height: 48px !important;
+      font-size: 24px !important;
+    }
+
+    .emp-form-col input,
+    .emp-form-col select {
+      background: #fdfdfd !important;
+      border: 1px solid #d1d5db !important;
+      padding: 10px 14px !important;
+    }
+
+    .emp-form-col input:focus,
+    .emp-form-col select:focus {
+      border-color: #6366f1 !important;
+      background: #fff !important;
+    }
+
+    .file-label-top {
+      font-size: 11px !important;
+      color: #374151 !important;
+      font-weight: 700 !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" role="navigation" aria-label="Main menu">
+      <div class="sidebar-logo">
+        <div class="logo-icon">
+          <img src="human reources pic.jpg" alt="Logo">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">HUMAN RESOURCE</span>
+          <span class="logo-subtitle">EMPLOYEE INFORMATION SYSTEM</span>
+        </div>
+      </div>
+      <ul>
+        <li><a href="Dashboard.html"><span class="nav-icon">■</span> Dashboard</a></li>
+        <li class="active" data-admin-only><a href="Employee Management-1.html"><span class="nav-icon">👥</span>
+            Employees</a></li>
+        <li data-admin-only><a href="Recruitment.html"><span class="nav-icon">📋</span> Recruitment</a></li>
+        <li data-admin-only><a href="Training.html"><span class="nav-icon">📚</span> Training</a></li>
+        <li data-admin-only><a href="Reports.html"><span class="nav-icon">📈</span> Reports</a></li>
+        <li data-employee-only><a href="My_Profile.html"><span class="nav-icon">👤</span> My Profile</a></li>
+        <li data-employee-only><a href="Profile.html"><span class="nav-icon">📋</span> Personal Data Sheet</a></li>
+        <li data-employee-only><a href="Leave_History.html"><span class="nav-icon">📅</span> Leave History</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Top bar -->
+      <header class="dashboard-header">
+        <div class="header-user">
+          <button type="button" id="sidebarToggle" class="btn-burger" title="Toggle Sidebar">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="user-avatar">
+            <img src="anonymous.jpg" alt="Profile" data-user-display="avatar">
+          </div>
+          <div class="user-info">
+            <span class="user-name" data-user-display="name">Christian</span>
+            <span class="user-role" data-role-display>Employee</span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-profile-outline" onclick="openAccountMenu()">👤 Profile</button>
+          <button class="btn-dashboard" data-admin-only onclick="window.location.href='Dashboard.html'">■
+            Dashboard</button>
+          <span class="logout-link" onclick="Auth.logout()">Logout</span>
+        </div>
+      </header>
+
+      <!-- Premium Content Header -->
+      <div class="emp-data-header-premium">
+        <div class="emp-header-content">
+          <div class="emp-header-icon-badge">👥</div>
+          <h1 class="emp-data-header-title">Employee Data</h1>
+        </div>
+
+        <!-- Toolbar: Search (Left) + Actions (Right) -->
+        <div class="emp-toolbar-refined">
+          <div class="search-input-wrapper">
+            <input type="text" id="filterSearch" placeholder="Search by name or ID..." />
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-add-employee" id="addEmployeeBtn" style="margin: 0;">+ Add
+              Employee</button>
+            <button type="button" class="btn-filter-alt" id="openFilterModalBtn">
+              <span>▼</span> Filter
+            </button>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 30px;">
+          <div style="overflow-x:auto;">
+            <table class="employees-table" style="margin: 0;">
+              <thead>
+                <tr style="background: #4f46e5; color: #fff;">
+                  <th
+                    style="color: #fff; border-bottom: none; padding: 15px 18px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">
+                    Employee ID</th>
+                  <th
+                    style="color: #fff; border-bottom: none; padding: 15px 18px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">
+                    Name</th>
+                  <th
+                    style="color: #fff; border-bottom: none; padding: 15px 18px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">
+                    Position</th>
+                  <th
+                    style="color: #fff; border-bottom: none; padding: 15px 18px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">
+                    Department</th>
+                  <th
+                    style="color: #fff; border-bottom: none; padding: 15px 18px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">
+                    Status</th>
+                  <th
+                    style="color: #fff; border-bottom: none; padding: 15px 18px; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">
+                    Actions</th>
+                </tr>
+              </thead>
+              <tbody id="employeesTableBody">
+                <tr data-id="EMP001" data-name="Juan Dela Cruz" data-firstname="Juan" data-lastname="Dela Cruz"
+                  data-position="Software Engineer" data-department="Engineering" data-status="Active"
+                  data-email="juan.delacruz@example.com" data-mobile="09171234567" data-dob="1990-05-15"
+                  data-gender="Male" data-address="123 Main St" data-city="Quezon City" data-state="NCR" data-zip="1100"
+                  data-marital="Single" data-nationality="Filipino" data-start="2020-03-01" data-manager="Ana Garcia"
+                  data-location="Office">
+                  <td>EMP001</td>
+                  <td>Juan Dela Cruz</td>
+                  <td>Software Engineer</td>
+                  <td>Engineering</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP002" data-name="Maria Santos" data-firstname="Maria" data-lastname="Santos"
+                  data-position="HR Manager" data-department="HR" data-status="Active"
+                  data-email="maria.santos@example.com" data-mobile="09182234567" data-dob="1985-08-22"
+                  data-gender="Female" data-address="456 Oak Ave" data-city="Makati" data-state="NCR" data-zip="1200"
+                  data-marital="Married" data-nationality="Filipino" data-start="2018-01-15"
+                  data-manager="Carlos Mendoza" data-location="Office">
+                  <td>EMP002</td>
+                  <td>Maria Santos</td>
+                  <td>HR Manager</td>
+                  <td>HR</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP003" data-name="Pedro Reyes" data-firstname="Pedro" data-lastname="Reyes"
+                  data-position="Marketing Specialist" data-department="Marketing" data-status="Active"
+                  data-email="pedro.reyes@example.com" data-mobile="09193234567" data-dob="1992-11-10"
+                  data-gender="Male" data-address="789 Pine Rd" data-city="Manila" data-state="NCR" data-zip="1000"
+                  data-marital="Single" data-nationality="Filipino" data-start="2021-06-01" data-manager="Rosa Diaz"
+                  data-location="Office">
+                  <td>EMP003</td>
+                  <td>Pedro Reyes</td>
+                  <td>Marketing Specialist</td>
+                  <td>Marketing</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP004" data-name="Ana Garcia" data-firstname="Ana" data-lastname="Garcia"
+                  data-position="Product Designer" data-department="Engineering" data-status="On Leave"
+                  data-email="ana.garcia@example.com" data-mobile="09204234567" data-dob="1991-04-18"
+                  data-gender="Female" data-address="321 Elm St" data-city="Pasig" data-state="NCR" data-zip="1600"
+                  data-marital="Married" data-nationality="Filipino" data-start="2019-09-15"
+                  data-manager="Juan Dela Cruz" data-location="Remote">
+                  <td>EMP004</td>
+                  <td>Ana Garcia</td>
+                  <td>Product Designer</td>
+                  <td>Engineering</td>
+                  <td><span class="status-badge status-on-leave">On Leave</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP005" data-name="Carlos Mendoza" data-firstname="Carlos" data-lastname="Mendoza"
+                  data-position="Operations Lead" data-department="Operations" data-status="Active"
+                  data-email="carlos.mendoza@example.com" data-mobile="09215234567" data-dob="1988-12-05"
+                  data-gender="Male" data-address="555 Cedar Ln" data-city="Taguig" data-state="NCR" data-zip="1630"
+                  data-marital="Married" data-nationality="Filipino" data-start="2017-02-20" data-manager="—"
+                  data-location="Office">
+                  <td>EMP005</td>
+                  <td>Carlos Mendoza</td>
+                  <td>Operations Lead</td>
+                  <td>Operations</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP006" data-name="Lisa Torres" data-firstname="Lisa" data-lastname="Torres"
+                  data-position="Recruitment Officer" data-department="HR" data-status="Active"
+                  data-email="lisa.torres@example.com" data-mobile="09226234567" data-dob="1994-07-25"
+                  data-gender="Female" data-address="777 Maple Dr" data-city="Mandaluyong" data-state="NCR"
+                  data-zip="1550" data-marital="Single" data-nationality="Filipino" data-start="2022-01-10"
+                  data-manager="Maria Santos" data-location="Office">
+                  <td>EMP006</td>
+                  <td>Lisa Torres</td>
+                  <td>Recruitment Officer</td>
+                  <td>HR</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP007" data-name="Mark Villanueva" data-firstname="Mark" data-lastname="Villanueva"
+                  data-position="Backend Developer" data-department="Engineering" data-status="On Leave"
+                  data-email="mark.villanueva@example.com" data-mobile="09237234567" data-dob="1989-03-12"
+                  data-gender="Male" data-address="999 Birch Blvd" data-city="Paranaque" data-state="NCR"
+                  data-zip="1700" data-marital="Single" data-nationality="Filipino" data-start="2020-08-01"
+                  data-manager="Juan Dela Cruz" data-location="Remote">
+                  <td>EMP007</td>
+                  <td>Mark Villanueva</td>
+                  <td>Backend Developer</td>
+                  <td>Engineering</td>
+                  <td><span class="status-badge status-on-leave">On Leave</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+                <tr data-id="EMP008" data-name="Rosa Diaz" data-firstname="Rosa" data-lastname="Diaz"
+                  data-position="Content Writer" data-department="Marketing" data-status="Active"
+                  data-email="rosa.diaz@example.com" data-mobile="09248234567" data-dob="1993-09-30"
+                  data-gender="Female" data-address="111 Walnut Way" data-city="Cebu City" data-state="Cebu"
+                  data-zip="6000" data-marital="Married" data-nationality="Filipino" data-start="2021-04-15"
+                  data-manager="Pedro Reyes" data-location="Remote">
+                  <td>EMP008</td>
+                  <td>Rosa Diaz</td>
+                  <td>Content Writer</td>
+                  <td>Marketing</td>
+                  <td><span class="status-badge status-active">Active</span></td>
+                  <td>
+                    <button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                    <button type="button" class="btn-action btn-view" title="View">👁</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add Employee Modal -->
+        <div class="emp-modal-overlay" id="addEmployeeModal" aria-hidden="true">
+          <div class="emp-modal emp-modal-add">
+            <div class="emp-modal-header">
+              <div class="emp-modal-icon-badge">👤<sup>+</sup></div>
+              <h2>Add New Employee</h2>
+              <button type="button" class="emp-modal-close" aria-label="Close">×</button>
+            </div>
+            <div class="emp-modal-tabs">
+              <button type="button" class="emp-tab active" data-tab="pane-personal">👤 Personal Information</button>
+              <button type="button" class="emp-tab" data-tab="pane-professional">💼 Professional Information</button>
+              <button type="button" class="emp-tab" data-tab="pane-documents">📄 Documents</button>
+            </div>
+            <form id="employeeForm" class="emp-modal-body">
+              <div class="emp-tab-pane active" id="pane-personal">
+                <div class="emp-form-two-col">
+                  <!-- Left Column -->
+                  <div class="emp-form-col">
+                    <label>FIRST NAME <input type="text" name="firstName" placeholder="First Name" required /></label>
+                    <label>MOBILE NUMBER <input type="text" name="mobile" placeholder="Mobile Number" /></label>
+                    <label>DATE OF BIRTH <input type="date" name="dob" /></label>
+                    <label>GENDER
+                      <select name="gender">
+                        <option value="" disabled selected>Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                      </select>
+                    </label>
+                    <label>ADDRESS <input type="text" name="address" placeholder="Address" /></label>
+                    <label>CITY <input type="text" name="city" placeholder="City" /></label>
+                    <label>PASSWORD <input type="password" name="password" placeholder="••••••" /></label>
+                  </div>
+                  <!-- Right Column -->
+                  <div class="emp-form-col emp-form-with-image">
+                    <div class="emp-profile-upload">
+                      <input type="file" id="profileImageInput" accept="image/*" />
+                      <div class="emp-profile-placeholder">
+                        <span class="emp-upload-icon">📷</span>
+                        <span>Upload or drag photo</span>
+                      </div>
+                    </div>
+                    <label>LAST NAME <input type="text" name="lastName" placeholder="Last Name" required /></label>
+                    <label>EMAIL ADDRESS <input type="email" name="email" placeholder="Email Address" /></label>
+                    <label>MARITAL STATUS
+                      <select name="marital">
+                        <option value="" disabled selected>Select Marital Status</option>
+                        <option>Single</option>
+                        <option>Married</option>
+                        <option>Widowed</option>
+                        <option>Other</option>
+                      </select>
+                    </label>
+                    <label>NATIONALITY <input type="text" name="nationality" placeholder="Nationality" /></label>
+                    <label>STATE <input type="text" name="state" placeholder="State" /></label>
+                    <label>ZIP CODE <input type="text" name="zip" placeholder="Zip Code" /></label>
+                  </div>
+                </div>
+              </div>
+              <div class="emp-tab-pane" id="pane-professional">
+                <div class="emp-form-two-col">
+                  <div class="emp-form-col">
+                    <label>EMPLOYEE ID <input type="text" name="empId" placeholder="EMP009" readonly /></label>
+                    <label>POSITION
+                      <select id="empPosition" name="position" required>
+                        <option value="" disabled selected>Select Position</option>
+                      </select>
+                    </label>
+                    <label>DEPARTMENT
+                      <select name="department">
+                        <option>Engineering</option>
+                        <option>Product</option>
+                        <option>Design</option>
+                        <option>Marketing</option>
+                        <option>Management</option>
+                      </select>
+                    </label>
+                    <label>STATUS
+                      <select name="status">
+                        <option value="Active">Active</option>
+                        <option value="On Leave">On Leave</option>
+                        <option value="Terminated">Terminated</option>
+                      </select>
+                    </label>
+                  </div>
+                  <div class="emp-form-col">
+                    <label>START DATE <input type="date" name="start" required /></label>
+                    <label>MANAGER <input type="text" name="manager" placeholder="Manager Name" /></label>
+                    <label>WORK LOCATION <input type="text" name="location" placeholder="Office / Remote" /></label>
+                  </div>
+                </div>
+              </div>
+              <div class="emp-tab-pane" id="pane-documents" style="padding: 10px 0;">
+                <div class="file-upload-grid">
+                  <div class="file-upload-card" onclick="this.querySelector('input').click()">
+                    <span class="file-label-top">Government Issued ID & Clearances</span>
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">Drag & Drop or <span>choose file</span> to upload</div>
+                    <span class="file-hint">Supported formats: Jpeg, pdf</span>
+                    <input type="file" name="govId" accept=".pdf,.jpg,.jpeg" onchange="updateFileName(this)" />
+                    <div class="file-name-display">No file chosen</div>
+                  </div>
+                  <div class="file-upload-card" onclick="this.querySelector('input').click()">
+                    <span class="file-label-top">Resume / CV</span>
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">Drag & Drop or <span>choose file</span> to upload</div>
+                    <span class="file-hint">Supported formats: Jpeg, pdf</span>
+                    <input type="file" name="resume" accept=".pdf,.jpg,.jpeg" onchange="updateFileName(this)" />
+                    <div class="file-name-display">No file chosen</div>
+                  </div>
+                  <div class="file-upload-card" onclick="this.querySelector('input').click()">
+                    <span class="file-label-top">Service Record</span>
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">Drag & Drop or <span>choose file</span> to upload</div>
+                    <span class="file-hint">Supported formats: Jpeg, pdf</span>
+                    <input type="file" name="serviceRecord" accept=".pdf,.jpg,.jpeg" onchange="updateFileName(this)" />
+                    <div class="file-name-display">No file chosen</div>
+                  </div>
+                  <div class="file-upload-card" onclick="this.querySelector('input').click()">
+                    <span class="file-label-top">Appointment Paper</span>
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">Drag & Drop or <span>choose file</span> to upload</div>
+                    <span class="file-hint">Supported formats: Jpeg, pdf</span>
+                    <input type="file" name="appointmentPaper" accept=".pdf,.jpg,.jpeg"
+                      onchange="updateFileName(this)" />
+                    <div class="file-name-display">No file chosen</div>
+                  </div>
+                  <div class="file-upload-card" onclick="this.querySelector('input').click()">
+                    <span class="file-label-top">Transcript of Records & Diploma</span>
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">Drag & Drop or <span>choose file</span> to upload</div>
+                    <span class="file-hint">Supported formats: Jpeg, pdf</span>
+                    <input type="file" name="tor" accept=".pdf,.jpg,.jpeg" onchange="updateFileName(this)" />
+                    <div class="file-name-display">No file chosen</div>
+                  </div>
+                  <div class="file-upload-card" onclick="this.querySelector('input').click()">
+                    <span class="file-label-top">Civil Service Eligibility Certificate</span>
+                    <div class="upload-icon">☁️</div>
+                    <div class="upload-text">Drag & Drop or <span>choose file</span> to upload</div>
+                    <span class="file-hint">Supported formats: Jpeg, pdf</span>
+                    <input type="file" name="eligibility" accept=".pdf,.jpg,.jpeg" onchange="updateFileName(this)" />
+                    <div class="file-name-display">No file chosen</div>
+                  </div>
+                </div>
+              </div>
+              <div class="emp-modal-footer">
+                <button type="button" class="btn-print" id="printBioBtn">🖨 Print BioData</button>
+                <button type="button" class="btn-cancel-grey" id="cancelAddEmployee">Cancel</button>
+                <button type="submit" class="btn-submit-green">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Employee Receipt / View Modal -->
+        <div class="emp-modal-overlay" id="viewEmployeeModal" aria-hidden="true">
+          <div class="emp-modal emp-modal-receipt">
+            <div class="emp-modal-header">
+              <span class="emp-modal-icon">👤</span>
+              <h2>Employee Information</h2>
+              <button type="button" class="emp-modal-close" id="closeViewModal" aria-label="Close">×</button>
+            </div>
+            <div class="emp-modal-tabs">
+              <button type="button" class="emp-tab active" data-receipt-tab="personal">👤 Personal Information</button>
+              <button type="button" class="emp-tab" data-receipt-tab="professional">💼 Professional Information</button>
+              <button type="button" class="emp-tab" data-receipt-tab="documents">📄 Documents</button>
+            </div>
+            <div class="emp-modal-body emp-receipt-body">
+              <div class="emp-tab-pane active" id="receipt-personal">
+                <div class="emp-form-two-col">
+                  <div class="emp-form-col">
+                    <div class="emp-profile-display">
+                      <img id="receiptProfileImg" src="anonymous.jpg" alt="Profile" />
+                    </div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">First Name</span><span
+                        id="r-firstName">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Last Name</span><span
+                        id="r-lastName">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Mobile</span><span
+                        id="r-mobile">—</span>
+                    </div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Email</span><span id="r-email">—</span>
+                    </div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Date of Birth</span><span
+                        id="r-dob">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Gender</span><span
+                        id="r-gender">—</span>
+                    </div>
+                  </div>
+                  <div class="emp-form-col">
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Marital Status</span><span
+                        id="r-marital">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Nationality</span><span
+                        id="r-nationality">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Address</span><span
+                        id="r-address">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">City</span><span id="r-city">—</span>
+                    </div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">State</span><span id="r-state">—</span>
+                    </div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">ZIP Code</span><span
+                        id="r-zip">—</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="emp-tab-pane" id="receipt-professional">
+                <div class="emp-form-two-col">
+                  <div class="emp-form-col">
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Employee ID</span><span
+                        id="r-empId">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Position</span><span
+                        id="r-position">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Department</span><span
+                        id="r-department">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Status</span><span
+                        id="r-status">—</span>
+                    </div>
+                  </div>
+                  <div class="emp-form-col">
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Start Date</span><span
+                        id="r-startDate">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Manager</span><span
+                        id="r-manager">—</span></div>
+                    <div class="emp-receipt-row"><span class="emp-receipt-label">Work Location</span><span
+                        id="r-location">—</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="emp-tab-pane" id="receipt-documents">
+                <div class="file-display-grid">
+                  <div class="file-display-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                      <span class="file-title">Government ID</span>
+                      <span class="file-value" id="r-govId">—</span>
+                    </div>
+                  </div>
+                  <div class="file-display-card">
+                    <div class="file-icon">📄</div>
+                    <div class="file-info">
+                      <span class="file-title">Resume / CV</span>
+                      <span class="file-value" id="r-resume">—</span>
+                    </div>
+                  </div>
+                  <div class="file-display-card">
+                    <div class="file-icon">📜</div>
+                    <div class="file-info">
+                      <span class="file-title">Service Record</span>
+                      <span class="file-value" id="r-serviceRecord">—</span>
+                    </div>
+                  </div>
+                  <div class="file-display-card">
+                    <div class="file-icon">📝</div>
+                    <div class="file-info">
+                      <span class="file-title">Appointment</span>
+                      <span class="file-value" id="r-appointmentPaper">—</span>
+                    </div>
+                  </div>
+                  <div class="file-display-card">
+                    <div class="file-icon">🎓</div>
+                    <div class="file-info">
+                      <span class="file-title">TOR / Diploma</span>
+                      <span class="file-value" id="r-tor">—</span>
+                    </div>
+                  </div>
+                  <div class="file-display-card">
+                    <div class="file-icon">🏆</div>
+                    <div class="file-info">
+                      <span class="file-title">Eligibility</span>
+                      <span class="file-value" id="r-eligibility">—</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="emp-modal-footer">
+              <button type="button" class="btn-cancel-grey" id="closeViewModalBtn">Close</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Modal -->
+        <div class="emp-modal-overlay" id="filterModal" aria-hidden="true">
+          <div class="emp-modal filter-modal-content">
+            <div class="emp-modal-header">
+              <span class="emp-modal-icon">🔍</span>
+              <h2>Filter Employees</h2>
+              <button type="button" class="emp-modal-close">×</button>
+            </div>
+            <div class="filter-modal-body">
+              <div class="filter-group">
+                <span class="filter-section-title">Department</span>
+                <label class="filter-option"><input type="checkbox" name="f-dept" value="Engineering">
+                  Engineering</label>
+                <label class="filter-option"><input type="checkbox" name="f-dept" value="Marketing"> Marketing</label>
+                <label class="filter-option"><input type="checkbox" name="f-dept" value="HR"> HR</label>
+                <label class="filter-option"><input type="checkbox" name="f-dept" value="Operations"> Operations</label>
+                <label class="filter-option"><input type="checkbox" name="f-dept" value="Accounting"> Accounting</label>
+              </div>
+              <div class="filter-group">
+                <span class="filter-section-title">Status</span>
+                <label class="filter-option"><input type="radio" name="f-status" value=""> All Status</label>
+                <label class="filter-option"><input type="radio" name="f-status" value="Active"> Active</label>
+                <label class="filter-option"><input type="radio" name="f-status" value="On Leave"> On Leave</label>
+                <label class="filter-option"><input type="radio" name="f-status" value="Terminated"> Terminated</label>
+              </div>
+            </div>
+            <div class="filter-modal-footer">
+              <button type="button" class="btn-cancel-filter">Cancel</button>
+              <button type="button" class="btn-apply-filter" id="applyFinalFilter">Apply Filters</button>
+            </div>
+          </div>
+        </div>
+
+    </main>
+
+  </div>
+
+  <script src="auth.js?v=6"></script>
+  <script>
+    // ── Global Modal Functions ──────────────────────────────────
+    window.openAddEmployeeModal = function () {
+      try {
+        const modal = document.getElementById('addEmployeeModal');
+        if (!modal) { console.error('addEmployeeModal not found!'); return; }
+
+        // Reset form
+        const form = document.getElementById('employeeForm');
+        if (form) form.reset();
+
+        // Set auto‑ID if we have nextId defined (will be defined below)
+        const empIdInput = form ? form.querySelector('[name="empId"]') : null;
+        if (empIdInput && typeof nextId !== 'undefined') {
+          empIdInput.value = 'EMP' + String(nextId).padStart(3, '0');
+        }
+
+        // Reset profile placeholder
+        const ph = modal.querySelector('.emp-profile-placeholder');
+        if (ph) ph.innerHTML = '<span class="emp-upload-icon">📷</span><span>Upload or drag photo</span>';
+
+        // Reset file displays
+        modal.querySelectorAll('.file-name-display').forEach(d => d.style.display = 'none');
+
+        // Switch to first tab
+        modal.querySelectorAll('.emp-tab').forEach(b => b.classList.remove('active'));
+        modal.querySelectorAll('.emp-tab-pane').forEach(p => p.classList.remove('active'));
+        const firstTab = modal.querySelector('.emp-tab[data-tab="pane-personal"]');
+        const firstPane = document.getElementById('pane-personal');
+        if (firstTab) firstTab.classList.add('active');
+        if (firstPane) firstPane.classList.add('active');
+
+        // Reset header text
+        const h2 = modal.querySelector('.emp-modal-header h2');
+        if (h2) h2.textContent = 'Add New Employee';
+        const submitBtn = modal.querySelector('.btn-submit-green');
+        if (submitBtn) {
+          submitBtn.textContent = 'Submit';
+          submitBtn.style.padding = '10px 40px';
+          submitBtn.style.fontSize = '1rem';
+        }
+
+        // Clear editing state
+        window.editingRow = null;
+
+        modal.setAttribute('aria-hidden', 'false');
+      } catch (e) { console.error('openAddEmployeeModal error:', e); }
+    };
+
+    window.openFilterModal = function () {
+      try {
+        const modal = document.getElementById('filterModal');
+        if (modal) modal.setAttribute('aria-hidden', 'false');
+        else console.error('filterModal not found!');
+      } catch (e) { console.error('openFilterModal error:', e); }
+    };
+
+    window.openEditModal = function (tr) {
+      window.editingRow = tr;
+      const d = tr.dataset;
+      const form = document.getElementById('employeeForm');
+      if (!form) return;
+      const fields = ['firstName', 'lastName', 'mobile', 'email', 'dob', 'gender', 'address', 'city', 'state', 'zip', 'marital', 'nationality', 'position', 'department', 'status', 'start', 'manager', 'location'];
+      fields.forEach(f => { const el = form.querySelector('[name="' + f + '"]'); if (el) el.value = d[f.toLowerCase()] || ''; });
+      const empIdEl = form.querySelector('[name="empId"]'); if (empIdEl) empIdEl.value = d.id || '';
+      const modal = document.getElementById('addEmployeeModal');
+      if (modal) {
+        const h2 = modal.querySelector('.emp-modal-header h2');
+        if (h2) h2.textContent = 'Edit Employee: ' + d.name;
+        const submitBtn = modal.querySelector('.btn-submit-green');
+        if (submitBtn) submitBtn.textContent = 'Update';
+        modal.setAttribute('aria-hidden', 'false');
+      }
+    };
+
+    window.openReceipt = function (tr) {
+      const d = tr.dataset;
+      const fmt = v => (v && v.trim()) ? v : '—';
+      const map = {
+        'r-empId': d.id, 'r-firstName': d.firstname, 'r-lastName': d.lastname,
+        'r-mobile': d.mobile, 'r-email': d.email, 'r-dob': d.dob, 'r-gender': d.gender,
+        'r-marital': d.marital, 'r-nationality': d.nationality, 'r-address': d.address,
+        'r-city': d.city, 'r-state': d.state, 'r-zip': d.zip,
+        'r-position': d.position, 'r-department': d.department,
+        'r-startDate': d.start, 'r-manager': d.manager, 'r-location': d.location
+      };
+      Object.entries(map).forEach(([id, val]) => { const el = document.getElementById(id); if (el) el.textContent = fmt(val); });
+      const statusEl = document.getElementById('r-status');
+      if (statusEl) statusEl.innerHTML = '<span class="status-badge status-' + (d.status === 'Active' ? 'active' : d.status === 'On Leave' ? 'on-leave' : 'terminated') + '">' + fmt(d.status) + '</span>';
+      ['r-govId', 'r-resume', 'r-serviceRecord', 'r-appointmentPaper', 'r-tor', 'r-eligibility'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = '—'; });
+      const modal = document.getElementById('viewEmployeeModal');
+      if (modal) {
+        modal.setAttribute('aria-hidden', 'false');
+        const h = modal.querySelector('.emp-modal-header h2');
+        if (h) h.textContent = 'Employee: ' + fmt(d.name);
+      }
+    };
+
+    window.applyFilter = function () {
+      try {
+        const filterModal = document.getElementById('filterModal');
+        const searchInput = document.getElementById('filterSearch');
+        const search = searchInput ? searchInput.value.toLowerCase().trim() : '';
+        const depts = Array.from(document.querySelectorAll('input[name="f-dept"]:checked')).map(c => c.value);
+        const statusEl = document.querySelector('input[name="f-status"]:checked');
+        const status = statusEl ? statusEl.value : '';
+        const rows = document.querySelectorAll('#employeesTableBody tr[data-id]');
+        let count = 0;
+        const old = document.getElementById('noFilterResults');
+        if (old) old.remove();
+        rows.forEach(tr => {
+          const match = (!search || tr.dataset.id.toLowerCase().includes(search) || (tr.dataset.name || '').toLowerCase().includes(search)) &&
+            (depts.length === 0 || depts.includes(tr.dataset.department)) &&
+            (!status || tr.dataset.status === status);
+          tr.style.display = match ? '' : 'none';
+          if (match) count++;
+        });
+        if (count === 0 && rows.length > 0) {
+          const nr = document.createElement('tr');
+          nr.id = 'noFilterResults';
+          nr.innerHTML = '<td colspan="6" style="text-align:center;padding:40px;color:#94a3b8;">🔍 No employees match your filters.</td>';
+          document.getElementById('employeesTableBody').appendChild(nr);
+        }
+        // Update filter button label
+        const fb = document.getElementById('openFilterModalBtn');
+        if (fb) {
+          const active = depts.length + (status ? 1 : 0);
+          fb.innerHTML = '<span>▼</span> Filter' + (active ? ' (' + active + ')' : '');
+          fb.style.background = active ? '#059669' : '';
+        }
+        if (filterModal) filterModal.setAttribute('aria-hidden', 'true');
+      } catch (e) { console.error('applyFilter error:', e); }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      // ── Auth ──────────────────────────────────────────────────
+      try {
+        console.log('Initializing Auth...');
+        if (typeof Auth !== 'undefined') {
+          // Wrap requireAdmin to prevent it from blocking later scripts if it fails/redirects
+          try {
+            Auth.requireAdmin();
+            Auth.applyRoleNav();
+            Auth.updateUserDisplay();
+          } catch (ae) { console.warn('Auth check skipped:', ae); }
+        }
+      } catch (e) { console.warn('Outer Auth error:', e); }
+
+      // ── Sidebar toggle ────────────────────────────────────────
+      try {
+        const sidebar = document.querySelector('.sidebar');
+        const toggleBtn = document.getElementById('sidebarToggle');
+        if (sidebar && toggleBtn) {
+          toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+          });
+          if (localStorage.getItem('sidebarCollapsed') === 'true') sidebar.classList.add('collapsed');
+        }
+      } catch (e) { console.warn('Sidebar error:', e); }
+
+      // ── Account menu ──────────────────────────────────────────
+      try {
+        window.openAccountMenu = function () {
+          const ov = document.getElementById('accountMenuOverlay');
+          if (ov) ov.classList.add('active');
+        };
+        const ov = document.getElementById('accountMenuOverlay');
+        const closeBtn = document.getElementById('closeAccountMenu');
+        if (ov && closeBtn) {
+          closeBtn.onclick = () => ov.classList.remove('active');
+          ov.onclick = (e) => { if (e.target === ov) ov.classList.remove('active'); };
+        }
+      } catch (e) { console.warn('Account menu error:', e); }
+
+      // ── File‑upload filename display ──────────────────────────
+      window.updateFileName = function (input) {
+        try {
+          const display = input.parentElement.querySelector('.file-name-display');
+          if (!display) return;
+          if (input.files && input.files.length > 0) {
+            display.textContent = '✅ ' + input.files[0].name;
+            display.style.display = 'block';
+          } else { display.style.display = 'none'; }
+        } catch (e) { console.warn('updateFileName error:', e); }
+      };
+
+      // ── Load positions from get_jobs.php ──────────────────────
+      (async function loadPositions() {
+        try {
+          const res = await fetch('get_jobs.php');
+          const data = await res.json();
+          if (data.success) {
+            const sel = document.getElementById('empPosition');
+            if (sel) {
+              sel.innerHTML = '<option value="" disabled selected>Select Position</option>';
+              data.jobs.forEach(j => {
+                const o = document.createElement('option');
+                o.value = j.title; o.textContent = j.title;
+                sel.appendChild(o);
+              });
+            }
+          }
+        } catch (e) { console.warn('loadPositions error:', e); }
+      })();
+
+      // ── Profile image preview ─────────────────────────────────
+      try {
+        const pi = document.getElementById('profileImageInput');
+        if (pi) {
+          pi.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+              const r = new FileReader();
+              r.onload = ev => {
+                const ph = document.querySelector('.emp-profile-placeholder');
+                if (ph) ph.innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+              };
+              r.readAsDataURL(this.files[0]);
+            }
+          });
+        }
+      } catch (e) { console.warn('Profile image error:', e); }
+
+      window.nextId = 9;
+      window.editingRow = null;
+
+      // ── Tab switching ─────────────────────────────────────────
+      try {
+        document.querySelectorAll('.emp-modal .emp-tab[data-tab]').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const modal = this.closest('.emp-modal-overlay');
+            if (!modal) return;
+            modal.querySelectorAll('.emp-tab').forEach(b => b.classList.remove('active'));
+            modal.querySelectorAll('.emp-tab-pane').forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            const pane = document.getElementById(this.getAttribute('data-tab'));
+            if (pane) pane.classList.add('active');
+          });
+        });
+      } catch (e) { console.warn('Tab switching error:', e); }
+
+      // ── ADD EMPLOYEE button ───────────────────────────────────
+      try {
+        const addBtn = document.getElementById('addEmployeeBtn');
+        if (!addBtn) { console.error('addEmployeeBtn not found in DOM!'); }
+        else {
+          console.log('Adding click listener to addEmployeeBtn');
+          addBtn.addEventListener('click', function (e) {
+            console.log('Add Employee clicked');
+            window.openAddEmployeeModal();
+          });
+        }
+      } catch (e) { console.error('Add Employee button error:', e); }
+
+      // ── FORM SUBMIT ───────────────────────────────────────────
+      try {
+        const form = document.getElementById('employeeForm');
+        if (form) {
+          form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const fd = new FormData(this);
+            const data = {
+              firstName: fd.get('firstName') || '', lastName: fd.get('lastName') || '',
+              email: fd.get('email') || '', password: fd.get('password') || '',
+              mobile: fd.get('mobile') || '', dob: fd.get('dob') || '',
+              gender: fd.get('gender') || '', address: fd.get('address') || '',
+              city: fd.get('city') || '', state: fd.get('state') || '',
+              zip: fd.get('zip') || '', marital: fd.get('marital') || '',
+              nationality: fd.get('nationality') || '', empId: fd.get('empId') || '',
+              position: fd.get('position') || '', department: fd.get('department') || '',
+              status: fd.get('status') || 'Active', start: fd.get('start') || '',
+              manager: fd.get('manager') || '', location: fd.get('location') || ''
+            };
+
+            const name = (data.firstName + ' ' + data.lastName).trim() || 'Unknown';
+            const sc = data.status === 'Active' ? 'status-active' : data.status === 'On Leave' ? 'status-on-leave' : 'status-terminated';
+            const rowHtml = (id) =>
+              `<td>${id}</td><td>${name}</td><td>${data.position}</td><td>${data.department}</td>
+               <td><span class="status-badge ${sc}">${data.status}</span></td>
+               <td><button type="button" class="btn-action btn-edit" title="Edit">✎</button>
+                   <button type="button" class="btn-action btn-view" title="View">👁</button></td>`;
+
+            if (window.editingRow) {
+              Object.keys(data).forEach(k => window.editingRow.dataset[k.toLowerCase()] = data[k]);
+              window.editingRow.dataset.name = name;
+              window.editingRow.innerHTML = rowHtml(window.editingRow.dataset.id);
+              this.reset();
+              document.getElementById('addEmployeeModal').setAttribute('aria-hidden', 'true');
+              window.editingRow = null;
+              alert('Employee updated.');
+            } else {
+              try {
+                const resp = await fetch('add_employee_backend.php', {
+                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(data)
+                });
+                if (!resp.ok) {
+                  const result = await resp.json();
+                  throw new Error(result.message || 'Server error');
+                }
+                const result = await resp.json();
+                const tr = document.createElement('tr');
+                tr.dataset.id = data.empId;
+                Object.keys(data).forEach(k => tr.dataset[k.toLowerCase()] = data[k]);
+                tr.dataset.name = name;
+                tr.innerHTML = rowHtml(data.empId);
+                document.getElementById('employeesTableBody').appendChild(tr);
+                const tot = document.getElementById('totalEmployees');
+                if (tot) tot.textContent = parseInt(tot.textContent, 10) + 1;
+                window.nextId++;
+                this.reset();
+                document.getElementById('addEmployeeModal').setAttribute('aria-hidden', 'true');
+                alert('Employee added successfully!');
+              } catch (err) { alert('Failed to add employee: ' + err.message); }
+            }
+          });
+        }
+      } catch (e) { console.error('Form submit error:', e); }
+
+      // ── Table row clicks ──────────────────────────────────────
+      try {
+        const tbody = document.getElementById('employeesTableBody');
+        if (tbody) {
+          tbody.addEventListener('click', function (e) {
+            const row = e.target.closest('tr');
+            if (!row) return;
+            if (e.target.closest('.btn-view')) window.openReceipt(row);
+            else if (e.target.closest('.btn-edit')) window.openEditModal(row);
+          });
+        }
+      } catch (e) { console.warn('Table click error:', e); }
+
+      // ── Modal close buttons ───────────────────────────────────
+      try {
+        document.querySelectorAll('.emp-modal-close, .btn-cancel-grey, .btn-cancel-filter, #cancelAddEmployee, #closeViewModal, #closeViewModalBtn').forEach(btn => {
+          btn.addEventListener('click', function () {
+            const modal = this.closest('.emp-modal-overlay');
+            if (modal) modal.setAttribute('aria-hidden', 'true');
+          });
+        });
+        document.querySelectorAll('.emp-modal-overlay').forEach(modal => {
+          modal.addEventListener('click', e => { if (e.target === modal) modal.setAttribute('aria-hidden', 'true'); });
+        });
+      } catch (e) { console.warn('Modal close error:', e); }
+
+      // ── View modal tabs ───────────────────────────────────────
+      try {
+        document.querySelectorAll('#viewEmployeeModal .emp-tab').forEach(btn => {
+          btn.addEventListener('click', function () {
+            document.querySelectorAll('#viewEmployeeModal .emp-tab').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#viewEmployeeModal .emp-tab-pane').forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            const pane = document.getElementById('receipt-' + this.dataset.receiptTab);
+            if (pane) pane.classList.add('active');
+          });
+        });
+      } catch (e) { console.warn('View tab error:', e); }
+
+      // ── FILTER button ─────────────────────────────────────────
+      try {
+        const openFilterBtn = document.getElementById('openFilterModalBtn');
+        if (!openFilterBtn) { console.error('openFilterModalBtn not found in DOM!'); }
+        else {
+          console.log('Adding click listener to openFilterModalBtn');
+          openFilterBtn.addEventListener('click', function (e) {
+            console.log('Filter button clicked');
+            window.openFilterModal();
+          });
+        }
+      } catch (e) { console.error('Filter button error:', e); }
+
+      // ── Apply filter ──────────────────────────────────────────
+      try {
+        const applyBtn = document.getElementById('applyFinalFilter');
+        if (applyBtn) applyBtn.addEventListener('click', window.applyFilter);
+        const s = document.getElementById('filterSearch');
+        if (s) s.addEventListener('input', window.applyFilter);
+      } catch (e) { console.warn('Filter wiring error:', e); }
+
+      // ── Print BioData ─────────────────────────────────────────
+      try {
+        const printBtn = document.getElementById('printBioBtn');
+        if (printBtn) {
+          printBtn.addEventListener('click', function () {
+            const form = document.getElementById('employeeForm');
+            if (!form) return;
+            const fd = new FormData(form);
+            const name = ((fd.get('firstName') || '') + ' ' + (fd.get('lastName') || '')).trim() || 'New Employee';
+            const w = window.open('', '_blank');
+            w.document.write('<!DOCTYPE html><html><head><title>BioData - ' + name + '</title><style>body{font-family:sans-serif;padding:40px}h1{color:#4f46e5;border-bottom:2px solid #4f46e5;padding-bottom:10px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}.field{margin-bottom:15px}.label{font-weight:700;font-size:12px;color:#64748b;text-transform:uppercase}.value{font-size:16px;margin-top:4px;border-bottom:1px solid #e2e8f0;padding-bottom:4px}</style></head><body>' +
+              '<h1>EMPLOYEE BIODATA</h1><div class="grid">' +
+              '<div class="field"><div class="label">Full Name</div><div class="value">' + name + '</div></div>' +
+              '<div class="field"><div class="label">Employee ID</div><div class="value">' + (fd.get('empId') || '') + '</div></div>' +
+              '<div class="field"><div class="label">Position</div><div class="value">' + (fd.get('position') || '') + '</div></div>' +
+              '<div class="field"><div class="label">Department</div><div class="value">' + (fd.get('department') || '') + '</div></div>' +
+              '</div><script>window.onload=function(){window.print();window.close()}<\/script></body></html>');
+            w.document.close();
+          });
+        }
+      } catch (e) { console.warn('Print error:', e); }
+
+
+    }); // end DOMContentLoaded
+  </script>
+
+  <!-- Account Menu Modal -->
+  <div class="account-menu-overlay" id="accountMenuOverlay">
+    <div class="account-menu-modal">
+      <div class="account-menu-header">
+        <button class="close-menu-btn" id="closeAccountMenu">&times;</button>
+        <div class="account-menu-title">Account Menu</div>
+        <div class="account-menu-avatar">
+          <img src="anonymous.jpg" alt="Profile">
+        </div>
+        <div class="account-user-name" data-user-display="name">--</div>
+        <div class="account-user-email" data-user-display="email">--</div>
+      </div>
+
+      <div class="account-info-box">
+        <div class="account-info-title">
+          <span class="account-info-icon">👤</span> Account Information
+        </div>
+        <div class="account-info-grid">
+          <div class="info-row">
+            <span class="info-label">First Name:</span>
+            <span class="info-value" data-user-display="firstname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Name:</span>
+            <span class="info-value" data-user-display="lastname">--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Designation:</span>
+            <span class="info-value" data-role-display>--</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value" data-user-display="email">--</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="account-menu-links">
+        <a href="Change_Password.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🔑</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Change password</span>
+              <span class="account-link-desc">Update your security</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+        <a href="Activity_Log.html" class="account-menu-link">
+          <div class="account-link-left">
+            <div class="account-link-icon">🕒</div>
+            <div class="account-link-text">
+              <span class="account-link-title">Activity Log</span>
+              <span class="account-link-desc">Recent account actions</span>
+            </div>
+          </div>
+          <span>&rsaquo;</span>
+        </a>
+      </div>
+
+      <div class="account-menu-footer">
+        HR Employee Information System v1.0
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
